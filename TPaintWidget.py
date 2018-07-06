@@ -22,18 +22,18 @@ class TPaintWidget(Qw.QWidget):
     def mousePressEvent(self, event: Qg.QMouseEvent):
         self.onMousePress.emit(event)
         print("press")
-        print(dir(event))
+        #print(dir(event))
 
     def mouseMoveEvent(self, event: Qg.QMouseEvent):
         self.onMouseMove.emit(event)
         print("move")
-        print(dir(event))
+        #print(dir(event))
 
     def mouseReleaseEvent(self, event: Qg.QMouseEvent):
         self.onMouseRelease.emit(event)
         print("release")
-        print(dir(event))
+        #print(dir(event))
 
     def mouseDoubleClickEvent(self, event: Qg.QMouseEvent):
         self.onDoubleClick.emit(event)
-        print(dir(event))
+        #print(dir(event))
