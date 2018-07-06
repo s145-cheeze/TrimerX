@@ -17,7 +17,7 @@ class TPaintWidget(Qw.QWidget):
         canvas = Qg.QPainter(self)
         self.onPaint.emit(event, canvas)                #シグナルの発行
         print("paint")
-        print(dir(event))
+        #print(dir(event))
 
     def mousePressEvent(self, event: Qg.QMouseEvent):
         self.onMousePress.emit(event)
