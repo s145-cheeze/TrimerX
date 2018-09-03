@@ -50,7 +50,7 @@ class FreeTrimWindow(TPaintWidget):
 
     def openImage(self, fileName):
         img = cv2.imread(fileName)
-        assert not self.cv2img is None
+        assert not img is None
         self.cv2img = cv2.cvtColor(img,cv2.COLOR_BGR2RGB)
 
         height, width, dim = self.cv2img.shape
@@ -104,7 +104,6 @@ class FreeTrimWindow(TPaintWidget):
             self.rectData.updateRectByQPoint(event.pos())
             self.cls()
             self.drawAllRect()
-            self.drawRectByFreeTrimRect(self.rectData.getCurrentRect())
             self.imgData.newImage(self.cv2img, self.rectData.getCurrentRect())
 
     def paintEvent(self, event):

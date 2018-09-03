@@ -13,3 +13,5 @@ class FreeTrimImageData(object):
         img = FreeTrimImage(img, rect)
         self.imgs.append(img)
         return img
+    def pop(self):
+        return self.imgs.pop()

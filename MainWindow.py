@@ -39,8 +39,8 @@ class menuTest(QtWidgets.QMainWindow):
         newAction4.triggered.connect(self.newTrigger4)
         newAction5.triggered.connect(self.newTrigger5)
         newAction6.triggered.connect(self.newTrigger6)
-    def initUI(self):
 
+    def initUI(self):
         self.setGeometry(300, 300, 720, 480)
         self.setWindowTitle('TrimerX ver1.0')
         self.show()

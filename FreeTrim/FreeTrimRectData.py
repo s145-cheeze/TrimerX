@@ -18,6 +18,13 @@ class FreeTrimRectData(object):
         for rect in self.rects:
             yield rect
 
+
+    def pop(self):
+        return self.rects.pop()
+
+    def hasAnyItems(self):
+        return len(self.rects) > 0
+
     def updateRectByXY(self, x, y):
         if self.currentRect is None:
             return
@@ -33,11 +40,10 @@ class FreeTrimRectData(object):
 
 
     def newRect(self, pos):
-        if not self.currentRect is None:
-            self.rects.append(self.currentRect)
         self.minX = pos.x()
         self.minY = pos.y()
         self.maxX = pos.x()
         self.maxY = pos.y()
 
         self.currentRect = FreeTrimRect(self.minX, self.minY, self.maxX, self.maxY)
+        self.rects.append(self.currentRect)
