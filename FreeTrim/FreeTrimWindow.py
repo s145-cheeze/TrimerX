@@ -54,6 +54,7 @@ class FreeTrimWindow(TPaintWidget):
         assert not self.cv2img is None
 
         height, width, dim = self.cv2img.shape
+        self.setFixedSize(width,height)
 
         loadedImage = QImage(self.cv2img.data, width, height, dim * width, QImage.Format_RGB888)
         newSize = loadedImage.size().expandedTo(self.size())
