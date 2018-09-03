@@ -50,8 +50,8 @@ class FreeTrimWindow(TPaintWidget):
 
     def openImage(self, fileName):
         img = cv2.imread(fileName)
-        self.cv2img = cv2.cvtColor(img,cv2.COLOR_BGR2RGB)
         assert not self.cv2img is None
+        self.cv2img = cv2.cvtColor(img,cv2.COLOR_BGR2RGB)
 
         height, width, dim = self.cv2img.shape
         self.setFixedSize(width,height)
