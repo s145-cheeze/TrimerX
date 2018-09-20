@@ -1,17 +1,13 @@
 # -*- coding: utf-8 -*-
 
 import sys
-from copy import deepcopy
 
 import cv2
 
 from PyQt5 import QtWidgets, QtGui
-
-from PyQt5.QtCore import QDir, QPoint, QRect, QSize, Qt
-from PyQt5.QtGui import QImage, QImageWriter, QPainter, QPen, qRgb
-from PyQt5.QtWidgets import (QAction, QApplication, QColorDialog, QFileDialog,
-        QInputDialog, QMainWindow, QMenu, QMessageBox, QWidget)
-from PyQt5.QtPrintSupport import QPrintDialog, QPrinter
+from PyQt5.QtCore import QDir, QPoint, QRect, Qt
+from PyQt5.QtGui import QImage, QPainter, QPen
+from PyQt5.QtWidgets import QFileDialog
 
 from TPaintWidget import *
 
@@ -46,7 +42,7 @@ class FreeTrimWindow(TPaintWidget):
 
 
     def showDialog(self):
-        return QFileDialog.getOpenFileName(parent = self, caption = "OpenFile" , filter ='Image Files (*.jpg *.png *.gif)' )
+        return QFileDialog.getOpenFileName(parent = self, caption = "Ope nFile" , filter ='Image Files (*.jpg *.png *.gif)' )
 
     def openImage(self, fileName):
         img = cv2.imread(fileName)
@@ -55,6 +51,15 @@ class FreeTrimWindow(TPaintWidget):
 
         height, width, dim = self.cv2img.shape
         self.setFixedSize(width,height)
+
+        # print("self.cv2img:")
+        # print(self.cv2img)
+        # print("type(self.cv2img):")
+        # print(type(self.cv2img))
+        # print("self.cv2img.data:")
+        # print(self.cv2img.data)
+        # print("type(self.cv2img.data):")
+        # print(type(self.cv2img.data))
 
         loadedImage = QImage(self.cv2img.data, width, height, dim * width, QImage.Format_RGB888)
         newSize = loadedImage.size().expandedTo(self.size())
@@ -93,8 +98,8 @@ class FreeTrimWindow(TPaintWidget):
     def mouseMoveEvent(self, event):
         if (event.buttons() & Qt.LeftButton) and self.scribbling:
             self.drawLineTo(event.pos())
-            print(event.pos())
-            print(event.pos().x(), event.pos().y())
+            #print(event.pos())
+            #print(event.pos().x(), event.pos().y())
             self.rectData.updateRectByQPoint(event.pos())
 
     def mouseReleaseEvent(self, event):
@@ -104,13 +109,17 @@ class FreeTrimWindow(TPaintWidget):
             self.rectData.updateRectByQPoint(event.pos())
             self.cls()
             self.drawAllRect()
+            if not self.rectData.hasArea():
+                self.rectData.pop()
+                self.cls()
+                return
             self.imgData.newImage(self.cv2img, self.rectData.getCurrentRect())
 
     def paintEvent(self, event):
         painter = QPainter(self)
         dirtyRect = event.rect()
         painter.drawImage(dirtyRect, self.image, dirtyRect)
-        print('paint')
+        #print('paint')
 
     def drawAllRect(self):
         for rect in self.rectData.getRects():

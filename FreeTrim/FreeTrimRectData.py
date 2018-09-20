@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from FreeTrimRect import *
 
 class FreeTrimRectData(object):
@@ -25,6 +27,9 @@ class FreeTrimRectData(object):
     def hasAnyItems(self):
         return len(self.rects) > 0
 
+    def hasArea(self):
+        return self.minX!=self.maxX and self.minY != self.maxY
+
     def updateRectByXY(self, x, y):
         if self.currentRect is None:
             return
@@ -33,7 +38,7 @@ class FreeTrimRectData(object):
         self.maxX = max(self.maxX, x)
         self.maxY = max(self.maxY, y)
         self.currentRect.update(self.minX, self.minY, self.maxX, self.maxY)
-        print(self.currentRect)
+        #print(self.currentRect)
 
     def updateRectByQPoint(self, pos):
         self.updateRectByXY(pos.x(), pos.y())

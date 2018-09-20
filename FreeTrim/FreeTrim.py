@@ -1,3 +1,9 @@
+# -*- coding: utf-8 -*-
+
+import sys
+
+import cv2
+
 from PyQt5 import QtWidgets
 from PyQt5.QtWidgets import QWidget, QMessageBox, QApplication, QPushButton
 
@@ -6,7 +12,6 @@ from FreeTrimRectData import *
 from FreeTrimImage import *
 from FreeTrimImageData import *
 from FreeTrimWindow import *
-
 class FreeTrim(QWidget):
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -35,14 +40,16 @@ class FreeTrim(QWidget):
         self.setLayout(self.hbox)
         self.show()
     def clicked_OK(self):
-        print("clicked: OK")
+        print("clicked:OK")
+        cv2.destroyAllWindows()
     def clicked_Undo(self):
         if not self.ftw.rectData.hasAnyItems():
-            return 
+            return
         self.ftw.rectData.pop()
         self.ftw.imgData.pop()
         self.ftw.cls()
         self.ftw.drawAllRect()
+
 
 
 def main():
