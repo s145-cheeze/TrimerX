@@ -12,7 +12,6 @@ class FreeTrimImage(object):
         self.rect = rect
         p1 , p2 = rect.get()
         self.img = img[p1[1]:p2[1],p1[0]:p2[0],:]
-        cv2.imshow(f"img:{rect}", self.img[:,:,::-1])
     def get(self):
         return self.img
     def create_QPixmap(self):

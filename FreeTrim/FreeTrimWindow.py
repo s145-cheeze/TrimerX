@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import sys
+from pathlib import Path
 
 import cv2
 
@@ -113,7 +114,8 @@ class FreeTrimWindow(TPaintWidget):
                 self.rectData.pop()
                 self.cls()
                 return
-            self.imgData.newImage(self.cv2img, self.rectData.getCurrentRect())
+            img = self.imgData.newImage(self.cv2img, self.rectData.getCurrentRect())
+            cv2.imshow(f"img:{self.rectData.getCurrentRect()}", img.get()[:,:,::-1])
 
     def paintEvent(self, event):
         painter = QPainter(self)

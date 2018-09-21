@@ -41,6 +41,16 @@ class FreeTrim(QWidget):
         self.show()
     def clicked_OK(self):
         print("clicked:OK")
+        loaded_image_path = Path(str(self.ftw.fname[0])).resolve()
+        print(loaded_image_path.name)
+        dir_name = QFileDialog.getExistingDirectory(self)
+        if len(dir_name) == 0:
+            return
+        print(dir_name)
+        for i, img in enumerate(self.ftw.imgData.getImages()):
+            img_name = str(Path(dir_name, "{}_{}{}".format(loaded_image_path.stem, f"00{i}"[-2:], loaded_image_path.suffix) ))
+            print(img_name)
+            cv2.imwrite(img_name, img.get()[:,:,::-1])
         cv2.destroyAllWindows()
     def clicked_Undo(self):
         if not self.ftw.rectData.hasAnyItems():
