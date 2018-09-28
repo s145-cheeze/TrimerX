@@ -10,7 +10,7 @@ from PyQt5.QtCore import QDir, QPoint, QRect, Qt
 from PyQt5.QtGui import QImage, QPainter, QPen
 from PyQt5.QtWidgets import QFileDialog
 
-from TPaintWidget import *
+
 
 from FreeTrimRect import *
 from FreeTrimRectData import *
