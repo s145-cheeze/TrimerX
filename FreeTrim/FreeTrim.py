@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import sys
+from pathlib import Path
 
 import cv2
 
@@ -12,6 +13,8 @@ from FreeTrimRectData import *
 from FreeTrimImage import *
 from FreeTrimImageData import *
 from FreeTrimWindow import *
+from FreeTrimPreview import *
+
 class FreeTrim(QWidget):
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -27,6 +30,8 @@ class FreeTrim(QWidget):
         self.ftw = FreeTrimWindow()
         self.hbox.addLayout(self.vbox)
 
+        self.loaded_image_path = Path(str(self.ftw.fname[0])).resolve()
+
         self.btnOK = QPushButton('OK')
         self.btnOK.clicked.connect(self.clicked_OK)
         self.vbox.addWidget(self.btnOK)
@@ -39,19 +44,25 @@ class FreeTrim(QWidget):
 
         self.setLayout(self.hbox)
         self.show()
-    def clicked_OK(self):
-        print("clicked:OK")
-        loaded_image_path = Path(str(self.ftw.fname[0])).resolve()
-        print(loaded_image_path.name)
+
+    def saveImages(self):
+        print(self.loaded_image_path.name)
         dir_name = QFileDialog.getExistingDirectory(self)
         if len(dir_name) == 0:
             return
         print(dir_name)
         for i, img in enumerate(self.ftw.imgData.getImages()):
-            img_name = str(Path(dir_name, "{}_{}{}".format(loaded_image_path.stem, f"00{i}"[-2:], loaded_image_path.suffix) ))
+            img_name = str(Path(dir_name, "{}_{}{}".format(self.loaded_image_path.stem, f"00{i}"[-2:], self.loaded_image_path.suffix) ))
             print(img_name)
             cv2.imwrite(img_name, img.get()[:,:,::-1])
+
+    def clicked_OK(self):
+        print("clicked:OK")
         cv2.destroyAllWindows()
+        self.preview = FreeTrimPreview(self)
+        self.preview.show()
+
+
     def clicked_Undo(self):
         if not self.ftw.rectData.hasAnyItems():
             return

@@ -15,12 +15,13 @@ class FreeTrimImage(object):
     def get(self):
         return self.img
     def create_QPixmap(self):
-        qimage = QImage(self.img.data, self.img.shape[1], self.img.shape[0], QImage.Format_RGB888)
+        img = self.img.copy()
+        qimage = QImage(img.data, img.shape[1], img.shape[0], img.shape[1] * img.shape[2], QImage.Format_RGB888)
         pixmap = QPixmap.fromImage(qimage)
         return pixmap
     def getQImage(self):
-        height, width, dim = self.img.shape
-        return QImage(self.img.data, width, height, dim * width, QImage.Format_RGB888)
+        img = self.img.copy()
+        return QImage(img.data, img.shape[1], img.shape[0], img.shape[1] * img.shape[2], QImage.Format_RGB888)
     def getQPixmap(self):
         #QImageをQPixmapに変換し、アイテムとして読み込む
         return QPixmap.fromImage(self.getQImage())
