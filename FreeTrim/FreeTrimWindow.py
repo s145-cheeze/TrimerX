@@ -19,7 +19,7 @@ from FreeTrimImageData import *
 
 
 
-class FreeTrimWindow(TPaintWidget):
+class FreeTrimWindow(QtWidgets.QWidget):
     def __init__(self, parent=None):
         super(FreeTrimWindow, self).__init__(parent)
         self.fname = self.showDialog()
