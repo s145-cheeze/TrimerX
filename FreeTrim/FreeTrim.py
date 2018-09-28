@@ -16,6 +16,7 @@ from FreeTrimWindow import *
 from FreeTrimPreview import *
 
 class FreeTrim(QWidget):
+    """トリミング部分と操作ボタンの画面"""
     def __init__(self, parent=None):
         super().__init__(parent)
         self.initUI()

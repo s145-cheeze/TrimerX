@@ -3,7 +3,7 @@
 from FreeTrimRect import *
 
 class FreeTrimRectData(object):
-    """docstring for FreeTrimRectData."""
+    """切り取る範囲の矩形をまとめるクラス"""
     def __init__(self):
         self.minX = None
         self.minY = None

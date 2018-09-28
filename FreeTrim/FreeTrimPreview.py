@@ -15,7 +15,7 @@ from FreeTrimImageData import *
 
 
 class FreeTrimPreview(QDialog):
-    """docstring for FreeTrimPreview."""
+    """どのように切り取られるかを表示"""
     def __init__(self, parent = None):
         super(FreeTrimPreview, self).__init__(parent)
 
@@ -73,7 +73,7 @@ class FreeTrimPreview(QDialog):
             self.inner_layout.addWidget(self.labels[-1])
             # 画像ラベル
             self.labels.append(QLabel())
-            self.labels[-1].setPixmap(img.create_QPixmap())
+            self.labels[-1].setPixmap(img.getQPixmap())
             self.inner_layout.addWidget(self.labels[-1])
 
 

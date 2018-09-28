@@ -4,7 +4,7 @@ from PyQt5.QtCore import QPoint, QRect
 
 
 class FreeTrimRect(object):
-    """docstring for FreeTrimRect."""
+    """切り取る範囲の矩形のクラス"""
     def __init__(self, *args):
         super(FreeTrimRect, self).__init__()
         self.update(*args)

@@ -6,7 +6,7 @@ import numpy as np
 from PyQt5.QtGui import QImage, QPixmap
 
 class FreeTrimImage(object):
-    """docstring for FreeTrimImage."""
+    """トリミングした画像のデータと矩形データ"""
     def __init__(self,img,rect):
         super(FreeTrimImage, self).__init__()
         self.rect = rect
@@ -14,12 +14,14 @@ class FreeTrimImage(object):
         self.img = img[p1[1]:p2[1],p1[0]:p2[0],:]
     def get(self):
         return self.img
-    def create_QPixmap(self):
-        img = self.img.copy()
-        qimage = QImage(img.data, img.shape[1], img.shape[0], img.shape[1] * img.shape[2], QImage.Format_RGB888)
-        pixmap = QPixmap.fromImage(qimage)
-        return pixmap
+    #これ同じ操作じゃね？→コメントアウト
+    # def create_QPixmap(self):
+    #     img = self.img.copy()
+    #     qimage = QImage(img.data, img.shape[1], img.shape[0], img.shape[1] * img.shape[2], QImage.Format_RGB888)
+    #     pixmap = QPixmap.fromImage(qimage)
+    #     return pixmap
     def getQImage(self):
+        # OpenCVの画像データをQImageに変換
         img = self.img.copy()
         return QImage(img.data, img.shape[1], img.shape[0], img.shape[1] * img.shape[2], QImage.Format_RGB888)
     def getQPixmap(self):

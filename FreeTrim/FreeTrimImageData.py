@@ -4,7 +4,7 @@ from FreeTrimImage import *
 
 
 class FreeTrimImageData(object):
-    """docstring for FreeTrimImageData."""
+    """トリミングした画像をまとめるクラス"""
     def __init__(self):
         super(FreeTrimImageData, self).__init__()
         self.imgs = []

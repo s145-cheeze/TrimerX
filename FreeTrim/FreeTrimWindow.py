@@ -20,6 +20,14 @@ from FreeTrimImageData import *
 
 
 class FreeTrimWindow(QtWidgets.QWidget):
+    """トリミングをする画面
+    手順:
+    1.画像読み込む
+    2.読み込んだ画像が出てくる
+    3.フリーハンドで切り取る
+    4.フリーハンドの図形が矩形に変換される
+    5.切り取った画像が表示される
+    """
     def __init__(self, parent=None):
         super(FreeTrimWindow, self).__init__(parent)
         self.fname = self.showDialog()
