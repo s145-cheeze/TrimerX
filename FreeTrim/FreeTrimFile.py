@@ -19,7 +19,14 @@ class FreeTrimFile(object):
         # ファイルの場所，名前→
         self.path = path if isinstance(path, Path) else Path(path).resolve()
         # 切り取る領域を保存するとこ
-        self.rect_data = FreeTrimRectManager()
+        self.rect_manager = FreeTrimRectManager()
+        self.img_manager = FreeTrimImageManager()
+    def getRectManager(self):
+        return self.rect_manager
+    def getImageManager(self, arg):
+        return self.img_manager
+    def getManagers(self):
+        return self.getRectManager(), self.getImageManager()
     def getPath(self):
         """ ファイルのパス返す """
         return self.path
@@ -31,4 +38,4 @@ class FreeTrimFile(object):
         return self.path.stem
     def getRectsManager(self):
         """ 矩形をまとめるクラスを返す """
-        return self.rect_data
+        return self.rect_manager
