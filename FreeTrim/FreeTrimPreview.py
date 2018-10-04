@@ -8,9 +8,9 @@ from PyQt5.QtGui import QPixmap
 from PyQt5.QtWidgets import  QApplication, QWidget, QLabel, QScrollArea, QVBoxLayout, QHBoxLayout, QDialog, QPushButton
 
 from FreeTrimRect import *
-from FreeTrimRectData import *
+from FreeTrimRectManager import *
 from FreeTrimImage import *
-from FreeTrimImageData import *
+from FreeTrimImageManager import *
 
 
 
@@ -22,7 +22,7 @@ class FreeTrimPreview(QDialog):
         self.ft = parent
 
         #メイン画面
-        self.setGeometry(300, 300, 720, 480)
+        self.setGeometry(300, 300, 1024, 768)
         self.scrollArea = QScrollArea()
         self.inner = QWidget()
         self.inner_layout = QVBoxLayout()
@@ -64,7 +64,7 @@ class FreeTrimPreview(QDialog):
 
     def setLabels(self):
         # TODO:ここのクラスの結合を疎にする
-        for i, img in enumerate(self.ft.ftw.imgData.getImages()):
+        for i, img in enumerate(self.ft.ftw.imgManager.getImages()):
             img_name = str( "{}_{}{}".format(self.ft.loaded_image_path.stem, f"00{i}"[-2:], self.ft.loaded_image_path.suffix) )
             # ファイル名ラベル
             self.labels.append(QLabel())
@@ -81,7 +81,7 @@ class FreeTrimPreview(QDialog):
 
 def main():
     app = QApplication(sys.argv)
-    ex1 = FreeTrimPreview(FreeTrimImageData())
+    ex1 = FreeTrimPreview(FreeTrimImageManager())
     ex1.show()
     sys.exit(app.exec_())
 if __name__ == "__main__":

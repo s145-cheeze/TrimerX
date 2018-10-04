@@ -5,159 +5,114 @@ from pathlib import Path
 
 import cv2
 
-from PyQt5 import QtWidgets, QtGui
-from PyQt5.QtCore import QDir, QPoint, QRect, Qt
-from PyQt5.QtGui import QImage, QPainter, QPen
-from PyQt5.QtWidgets import QFileDialog
-
-
+from PyQt5 import QtWidgets
+from PyQt5.QtWidgets import QWidget, QMessageBox, QApplication, QPushButton
 
 from FreeTrimRect import *
-from FreeTrimRectData import *
+from FreeTrimRectManager import *
 from FreeTrimImage import *
-from FreeTrimImageData import *
+from FreeTrimImageManager import *
+from FreeTrimWidget import *
+from FreeTrimPreview import *
+
+class FreeTrimWindow(QWidget):
+    """トリミング部分と操作ボタンの画面"""
+    def __init__(self,fmanager = None, parent=None):
+        super().__init__(parent)
+        self.initUI()
+
+        self.fmanager = fmanager
 
 
+    def initUI(self):
+        #メイン画面
+        self.setGeometry(300, 300, 1024, 768)
+        self.setWindowTitle('TrimerX - FreeTrimMode')
+        self.vbox = QtWidgets.QVBoxLayout()
+        self.hbox = QtWidgets.QHBoxLayout()
 
-class FreeTrimWindow(QtWidgets.QWidget):
-    """トリミングをする画面
-    手順:
-    1.画像読み込む
-    2.読み込んだ画像が出てくる
-    3.フリーハンドで切り取る
-    4.フリーハンドの図形が矩形に変換される
-    5.切り取った画像が表示される
-    """
-    def __init__(self, parent=None):
-        super(FreeTrimWindow, self).__init__(parent)
-        self.fname = self.showDialog()
-        print(f"fname:{self.fname}")
+        #切り取り画面
+        self.ftw = FreeTrimWidget()
+        self.hbox.addLayout(self.vbox)
 
-        self.hbox = QtWidgets.QHBoxLayout(self)
+        #
+        self.loaded_image_path = Path(str(self.ftw.fname[0])).resolve()
+
+        self.btnOK = QPushButton('OK')
+        self.btnOK.clicked.connect(self.clicked_OK)
+        self.vbox.addWidget(self.btnOK)
+
+        self.btnUndo = QPushButton('一つ戻す')
+        self.btnUndo.clicked.connect(self.clicked_Undo)
+        self.vbox.addWidget(self.btnUndo)
+
+        #メイン画面
+        self.scrollArea = QScrollArea()
+        self.inner = QWidget()
+        self.inner_layout = QVBoxLayout()
+        self.inner.setLayout(self.inner_layout)
+
+        self.inner_layout.addWidget(self.ftw)
+
+        self.scrollArea.setWidget(self.inner)
+
+        self.hbox.addWidget(self.scrollArea)
+
         self.setLayout(self.hbox)
+        self.show()
+    def setPathListBox(self):
+        self.path_list_widget = QListWidget()
+        self.path_list_widget.setMinimumSize(200,400)
+        self.path_list_widget.setMaximumWidth(200)
 
-        self.setAttribute(Qt.WA_StaticContents)
-        self.modified = False
-        self.scribbling = False
-        self.myPenWidth = 1
-        self.myPenColor = Qt.blue
-        self.image = QImage()
-        self.lastPoint = QPoint()
+        #選択行が変わったらイベント
+        self.path_list_widget.currentRowChanged.connect(self.listMove)
+        #クリックされたらイベント
+        self.path_list_widget.itemClicked.connect(self.listClicked)
+        self.vbox.addWidget(self.path_list_widget)
+    def setPreview(self):
+        pass
 
-        self.rectData = FreeTrimRectData()
-        self.imgData = FreeTrimImageData()
+    def listMove(self, item):
+        #print(f"list moved:{item}")
+        self.index = item
+        self.setPreview()
+    def listClicked(self, item):pass
+        # print(item)
+        # print(f"list clicked:{self.path_list_widget.currentRow()}")
 
-        self.openImage(self.fname[0])
-
-
-    def showDialog(self):
-        return QFileDialog.getOpenFileName(parent = self, caption = "Ope nFile" , filter ='Image Files (*.jpg *.png *.gif)' )
-
-    def openImage(self, fileName):
-        img = cv2.imread(fileName)
-        assert not img is None
-        self.cv2img = cv2.cvtColor(img,cv2.COLOR_BGR2RGB)
-
-        height, width, dim = self.cv2img.shape
-        self.setFixedSize(width,height)
-
-        # print("self.cv2img:")
-        # print(self.cv2img)
-        # print("type(self.cv2img):")
-        # print(type(self.cv2img))
-        # print("self.cv2img.data:")
-        # print(self.cv2img.data)
-        # print("type(self.cv2img.data):")
-        # print(type(self.cv2img.data))
-
-        loadedImage = QImage(self.cv2img.data, width, height, dim * width, QImage.Format_RGB888)
-        newSize = loadedImage.size().expandedTo(self.size())
-        self.resizeImage(loadedImage, newSize)
-        self.image = loadedImage
-        self.modified = False
-        self.update()
-        return True
-    def cls(self):
-        height, width, dim = self.cv2img.shape
-        self.image = QImage(self.cv2img.data, width, height, dim * width, QImage.Format_RGB888)
-        self.update()
-
-
-    def resizeImage(self, image, newSize):
-        if image.size() == newSize:
-            print("resizeImage:return")
+    def saveImages(self):
+        print(self.loaded_image_path.name)
+        dir_name = QFileDialog.getExistingDirectory(self)
+        if len(dir_name) == 0:
             return
+        print(dir_name)
+        for i, img in enumerate(self.ftw.imgManager.getImages()):
+            img_name = str(Path(dir_name, "{}_{}{}".format(self.loaded_image_path.stem, f"00{i}"[-2:], self.loaded_image_path.suffix) ))
+            print(img_name)
+            cv2.imwrite(img_name, img.get()[:,:,::-1])
 
-        newImage = QImage(newSize, QImage.Format_RGB32)
-        newImage.fill(qRgb(255, 255, 255))
-        painter = QPainter(newImage)
-        painter.drawImage(QPoint(0, 0), image)
-        self.image = newImage
-        self.update()
+    def clicked_OK(self):
+        print("clicked:OK")
+        cv2.destroyAllWindows()
+        self.preview = FreeTrimPreview(self)
+        self.preview.show()
 
-        super(FreeTrim, self).resizeEvent(event)
 
-    def mousePressEvent(self, event):
-        if event.button() == Qt.LeftButton:
-            self.rectData.newRect(event.pos())
-            self.lastPoint = event.pos()
-            self.scribbling = True
-            self.rectData.updateRectByQPoint(event.pos())
+    def clicked_Undo(self):
+        if not self.ftw.rectManager.hasAnyItems():
+            return
+        self.ftw.rectManager.pop()
+        self.ftw.imgManager.pop()
+        self.ftw.cls()
+        self.ftw.drawAllRect()
 
-    def mouseMoveEvent(self, event):
-        if (event.buttons() & Qt.LeftButton) and self.scribbling:
-            self.drawLineTo(event.pos())
-            #print(event.pos())
-            #print(event.pos().x(), event.pos().y())
-            self.rectData.updateRectByQPoint(event.pos())
 
-    def mouseReleaseEvent(self, event):
-        if event.button() == Qt.LeftButton and self.scribbling:
-            self.drawLineTo(event.pos())
-            self.scribbling = False
-            self.rectData.updateRectByQPoint(event.pos())
-            self.cls()
-            self.drawAllRect()
-            if not self.rectData.hasArea():
-                self.rectData.pop()
-                self.cls()
-                return
-            img = self.imgData.newImage(self.cv2img, self.rectData.getCurrentRect())
-            cv2.imshow(f"img:{self.rectData.getCurrentRect()}", img.get()[:,:,::-1])
 
-    def paintEvent(self, event):
-        painter = QPainter(self)
-        dirtyRect = event.rect()
-        painter.drawImage(dirtyRect, self.image, dirtyRect)
-        #print('paint')
-
-    def drawAllRect(self):
-        for rect in self.rectData.getRects():
-            self.drawRectByFreeTrimRect(rect)
-
-    def drawRectByQRect(self, qrect):
-        painter = QPainter(self.image)
-        painter.setBrush(Qt.NoBrush)
-        size = 3
-        painter.setPen(QPen(Qt.red, size, Qt.SolidLine,
-        Qt.RoundCap, Qt.RoundJoin))
-        painter.drawRect(qrect)
-
-        self.update(qrect.adjusted(-size, -size, +size, +size))
-
-    def drawRectByFreeTrimRect(self,rect):
-        self.drawRectByQRect(rect.getQRect())
-
-    def drawLineTo(self, endPoint):
-        painter = QPainter(self.image)
-        painter.setPen(QPen(self.myPenColor, self.myPenWidth, Qt.SolidLine,
-        Qt.RoundCap, Qt.RoundJoin))
-        painter.drawLine(self.lastPoint, endPoint)
-        self.modified = True
-
-        rad = self.myPenWidth / 2 + 2
-        self.update(QRect(self.lastPoint, endPoint).normalized().adjusted(-rad, -rad, +rad, +rad))
-        self.lastPoint = QPoint(endPoint)
-
-if __name__ == '__main__':
+def main():
+    app = QApplication(sys.argv)
+    ex1 = FreeTrimWindow()
+    ex1.show()
+    sys.exit(app.exec_())
+if __name__ == "__main__":
     main()

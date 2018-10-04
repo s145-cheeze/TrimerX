@@ -1,8 +1,15 @@
 # -*- coding: utf-8 -*-
 
-from . import FreeTrim
-from . import FreeTrimWindow
-from . import FreeTrimRect
-from . import FreeTrimRectData
+from . import FreeTrimData
+from . import FreeTrimFile
+from . import FreeTrimFileManager
 from . import FreeTrimImage
-from . import FreeTrimImageData
+from . import FreeTrimImageManager
+from . import FreeTrimImportListSetting
+from . import FreeTrimPreview
+from . import FreeTrimRect
+from . import FreeTrimRectManager
+from . import FreeTrimWidget
+from . import FreeTrimWindow
+
+from . import FreeTrimMain

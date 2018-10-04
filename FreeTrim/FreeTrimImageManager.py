@@ -3,10 +3,10 @@
 from FreeTrimImage import *
 
 
-class FreeTrimImageData(object):
+class FreeTrimImageManager(object):
     """トリミングした画像をまとめるクラス"""
     def __init__(self):
-        super(FreeTrimImageData, self).__init__()
+        super(FreeTrimImageManager, self).__init__()
         self.imgs = []
     def getImages(self):
         for img in self.imgs:
