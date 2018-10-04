@@ -25,11 +25,11 @@ class FTILS_Result(Enum):
 
 class FreeTrimImportListSetting(QWidget):
     """トリミングしたい画像を指定する"""
-    def __init__(self,parent = None):
+    def __init__(self,fmanager ,parent = None):
         super(FreeTrimImportListSetting, self).__init__(parent)
         self.ft_main = None
         self.index = -1
-        self.files = FreeTrimFileManager()
+        self.fmanager = fmanager
         self.initUI()
     def connectFTMain(self, arg):
         self.ft_main = arg
@@ -84,14 +84,14 @@ class FreeTrimImportListSetting(QWidget):
         path = Path(fname)
         if path.is_file():
             print(path)
-            self.files.add(path)
+            self.fmanager.add(path)
             self.path_list_widget.addItem(path.stem)
 
     def btn_append_dir_clicked(self, event):
         fname = QFileDialog.getExistingDirectory(parent = self, caption = "Open Directory")
         dir_path = Path(fname)
-        self.files.addFilesByDirPath(dir_path)
-        for path in self.files.getFiles():
+        self.fmanager.addFilesByDirPath(dir_path)
+        for path in self.fmanager.getFiles():
             self.path_list_widget.addItem(path.getFileName())
 
     def openImage(self, fileName):
@@ -117,7 +117,7 @@ class FreeTrimImportListSetting(QWidget):
         if self.ft_main is None:
             self.close()
             return
-        self.ft_main.ftilsResult(FTILS_Result.OK, self.files)
+        self.ft_main.ftilsResult(FTILS_Result.OK, self.fmanager)
         self.close()
     def setPathListBox(self):
         self.path_list_widget = QListWidget()
@@ -132,7 +132,7 @@ class FreeTrimImportListSetting(QWidget):
 
     def setPreview(self):
         if self.index == -1 : return
-        path = self.files.get(self.index).getPath()
+        path = self.fmanager.get(self.index).getPath()
         self.pixmap = QPixmap(path.as_posix())
         self.preview_lbl.setPixmap(self.pixmap.scaledToHeight(self.height()-20))
 

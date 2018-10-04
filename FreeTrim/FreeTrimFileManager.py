@@ -16,15 +16,22 @@ class FreeTrimFileManager(object):
     """FreeTrimFileクラスを管理する"""
     def __init__(self, fnames = None):
         self.files_data = []
-        if fnames is None :return
-        for fname in fnames:
-            file_data = FreeTrimFile(fname)
-            self.files_data.append(file_data)
+        self.current = None
+        if fnames is None :
+            return
+        self.addFilesByDirPath(fnames)
+    def setCurrent(self, index):
+        self.current = self.files_data[index]
+
+    def getCurrent(self):
+        if self.current == None:
+            self.setCurrent(0)
+        return self.current
 
     def isAddedRecently(self, path):
         """同じパスが入ってないか確認"""
-        for fp in self.getFileName():
-            if path.as_posix == fp.as_posix:
+        for fp in self.getFiles():
+            if path.as_posix == fp.getPath().as_posix:
                 return True
         return False
     def add(self, fname):

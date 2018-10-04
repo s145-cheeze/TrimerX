@@ -28,9 +28,8 @@ class FreeTrimWidget(QtWidgets.QWidget):
     4.フリーハンドの図形が矩形に変換される
     5.切り取った画像が表示される
     """
-    def __init__(self,fname = None, parent=None):
+    def __init__(self,fmanager = None , fname = None, parent=None):
         super(FreeTrimWidget, self).__init__(parent)
-        print(f"fname:{self.fname}")
 
         self.hbox = QtWidgets.QHBoxLayout(self)
         self.setLayout(self.hbox)
@@ -43,11 +42,11 @@ class FreeTrimWidget(QtWidgets.QWidget):
         self.image = QImage()
         self.lastPoint = QPoint()
 
-        self.rectManager = FreeTrimRectManager()
-        self.imgManager = FreeTrimImageManager()
+        self.fManager
     def setFile(self, fname = None):
         if fname == None:
             self.fname, _ = self.showDialog()
+            print(f"fname:{self.fname}")
         else:
             self.fname = fname
         self.openImage(self.fname)

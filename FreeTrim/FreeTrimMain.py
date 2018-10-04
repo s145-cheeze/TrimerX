@@ -27,9 +27,14 @@ class FreeTrimMain(QWidget):
     起動の仕方を指定する """
     def __init__(self):
         super(FreeTrimMain, self).__init__()
+
+        self.fmanager = FreeTrimFileManager()
+
+        self.initUI()
+    def initUI(self):
         self.layout = QVBoxLayout()
-        self.lbl_welcome = QLabel("<h1>TrimerX 自由トリミングモード</h1>")
-        self.layout.addWidget(self.lbl_welcome)
+        self.lbl_title = QLabel("<h1>TrimerX 自由トリミングモード</h1>")
+        self.layout.addWidget(self.lbl_title)
 
         self.btns_layout = QVBoxLayout()
         self.layout.addLayout(self.btns_layout)
@@ -49,18 +54,18 @@ class FreeTrimMain(QWidget):
 
     def btn_ftils_run_clicked(self, event):
         # ftils = FreeTrimImportListSettingの単語の頭文字
-        self.ftils = FreeTrimImportListSetting();
+        self.ftils = FreeTrimImportListSetting(self.fmanager);
         self.ftils.connectFTMain(self)
         self.ftils.show()
-    def ftilsResult(self, arg, files = None):
+    def ftilsResult(self, arg, fmanager = None):
         print(f"ftilsResult {arg}")
         if arg == FTILS_Result.Cancel:
             pass
             # self.close()
         elif arg == FTILS_Result.OK:
-            print([f.getFileName() for f in files.getFiles()])
+            print([f.getFileName() for f in self.fmanager.getFiles()])
 
-            # self.ftw = FreeTrimWindow(files)
+            # self.ftw = FreeTrimWindow(fmanager)
             # self.ftw.show()
 
 def main():

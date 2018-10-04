@@ -36,7 +36,7 @@ class FreeTrimWindow(QWidget):
         self.hbox.addLayout(self.vbox)
 
         #
-        self.loaded_image_path = Path(str(self.ftw.fname[0])).resolve()
+        self.loaded_image_path = Path(str(self.ftw.fname)).resolve()
 
         self.btnOK = QPushButton('OK')
         self.btnOK.clicked.connect(self.clicked_OK)
