@@ -64,8 +64,6 @@ class FreeTrimPreview(QDialog):
         self.close()
 
     def setLabels(self):
-        # TODO:ここのクラスの結合を疎にする
-
         for ft_file in self.fmanager.getFiles():
             self.labels.append(QLabel())
             s = f"<h1>{ft_file.getPath().stem}</h1>"
