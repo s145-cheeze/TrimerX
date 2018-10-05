@@ -132,8 +132,8 @@ class FreeTrimImportListSetting(QWidget):
 
     def setPreview(self):
         if self.index == -1 : return
-        path = self.fmanager.get(self.index).getPath()
-        self.pixmap = QPixmap(path.as_posix())
+        ft_file = self.fmanager.get(self.index)
+        self.pixmap = QPixmap.fromImage(ft_file.getImageManager().getMainQImage())
         self.preview_lbl.setPixmap(self.pixmap.scaledToHeight(self.height()-20))
 
     def listMove(self, item):
