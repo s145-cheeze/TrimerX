@@ -20,10 +20,10 @@ class FreeTrimFile(object):
         self.path = path if isinstance(path, Path) else Path(path).resolve()
         # 切り取る領域を保存するとこ
         self.rect_manager = FreeTrimRectManager()
-        self.img_manager = FreeTrimImageManager()
+        self.img_manager = FreeTrimImageManager(self.path)
     def getRectManager(self):
         return self.rect_manager
-    def getImageManager(self, arg):
+    def getImageManager(self):
         return self.img_manager
     def getManagers(self):
         return self.getRectManager(), self.getImageManager()

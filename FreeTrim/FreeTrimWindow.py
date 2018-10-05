@@ -6,12 +6,13 @@ from pathlib import Path
 import cv2
 
 from PyQt5 import QtWidgets
-from PyQt5.QtWidgets import QWidget, QMessageBox, QApplication, QPushButton
+from PyQt5.QtWidgets import QWidget, QMessageBox, QApplication, QPushButton, QListWidget
 
 from FreeTrimRect import *
 from FreeTrimRectManager import *
 from FreeTrimImage import *
 from FreeTrimImageManager import *
+from FreeTrimFileManager import *
 from FreeTrimWidget import *
 from FreeTrimPreview import *
 
@@ -19,9 +20,10 @@ class FreeTrimWindow(QWidget):
     """トリミング部分と操作ボタンの画面"""
     def __init__(self,fmanager = None, parent=None):
         super().__init__(parent)
-        self.initUI()
-
         self.fmanager = fmanager
+        self.initUI()
+        self.updatePathListBox()
+
 
 
     def initUI(self):
@@ -32,11 +34,10 @@ class FreeTrimWindow(QWidget):
         self.hbox = QtWidgets.QHBoxLayout()
 
         #切り取り画面
-        self.ftw = FreeTrimWidget()
+        self.ftw = FreeTrimWidget(self.fmanager)
         self.hbox.addLayout(self.vbox)
 
-        #
-        self.loaded_image_path = Path(str(self.ftw.fname)).resolve()
+
 
         self.btnOK = QPushButton('OK')
         self.btnOK.clicked.connect(self.clicked_OK)
@@ -58,6 +59,7 @@ class FreeTrimWindow(QWidget):
 
         self.hbox.addWidget(self.scrollArea)
 
+        self.setPathListBox()
         self.setLayout(self.hbox)
         self.show()
     def setPathListBox(self):
@@ -70,40 +72,49 @@ class FreeTrimWindow(QWidget):
         #クリックされたらイベント
         self.path_list_widget.itemClicked.connect(self.listClicked)
         self.vbox.addWidget(self.path_list_widget)
+    def updatePathListBox(self):
+        self.path_list_widget.clear()
+        for path in self.fmanager.getFiles():
+            self.path_list_widget.addItem(path.getFileName())
     def setPreview(self):
         pass
 
     def listMove(self, item):
         #print(f"list moved:{item}")
         self.index = item
+        self.fmanager.setCurrent(self.index)
+        self.ftw.changeImage()
         self.setPreview()
-    def listClicked(self, item):pass
+    def listClicked(self, item):
+        pass
+
         # print(item)
         # print(f"list clicked:{self.path_list_widget.currentRow()}")
 
     def saveImages(self):
-        print(self.loaded_image_path.name)
         dir_name = QFileDialog.getExistingDirectory(self)
         if len(dir_name) == 0:
             return
         print(dir_name)
-        for i, img in enumerate(self.ftw.imgManager.getImages()):
-            img_name = str(Path(dir_name, "{}_{}{}".format(self.loaded_image_path.stem, f"00{i}"[-2:], self.loaded_image_path.suffix) ))
-            print(img_name)
-            cv2.imwrite(img_name, img.get()[:,:,::-1])
+
+        for ft_file in self.fmanager.getFiles():
+            for i, img in enumerate(ft_file.getImageManager().getImages()):
+                img_name = str(Path(dir_name, "{}_{}{}".format(ft_file.getPath().stem, f"00{i}"[-2:], ft_file.getPath().suffix) ))
+                print(img_name)
+                cv2.imwrite(img_name, img.get()[:,:,::-1])
 
     def clicked_OK(self):
         print("clicked:OK")
-        cv2.destroyAllWindows()
-        self.preview = FreeTrimPreview(self)
+        #cv2.destroyAllWindows()
+        self.preview = FreeTrimPreview(self.fmanager, self)
         self.preview.show()
 
 
     def clicked_Undo(self):
-        if not self.ftw.rectManager.hasAnyItems():
+        if not self.ftw.rect_manager.hasAnyItems():
             return
-        self.ftw.rectManager.pop()
-        self.ftw.imgManager.pop()
+        self.ftw.rect_manager.pop()
+        self.ftw.img_manager.pop()
         self.ftw.cls()
         self.ftw.drawAllRect()
 
@@ -111,7 +122,9 @@ class FreeTrimWindow(QWidget):
 
 def main():
     app = QApplication(sys.argv)
-    ex1 = FreeTrimWindow()
+    fmanager = FreeTrimFileManager()
+    fmanager.addFileDilalog()
+    ex1 = FreeTrimWindow(fmanager)
     ex1.show()
     sys.exit(app.exec_())
 if __name__ == "__main__":

@@ -8,7 +8,7 @@ import cv2
 from PyQt5 import QtWidgets, QtGui
 from PyQt5.QtCore import QDir, QPoint, QRect, Qt
 from PyQt5.QtGui import QImage, QPainter, QPen
-from PyQt5.QtWidgets import QWidget, QMessageBox, QApplication, QPushButton
+from PyQt5.QtWidgets import QWidget, QMessageBox, QApplication, QPushButton, QFileDialog
 
 from FreeTrimFile import *
 
@@ -20,6 +20,11 @@ class FreeTrimFileManager(object):
         if fnames is None :
             return
         self.addFilesByDirPath(fnames)
+    def addFileDilalog(self):
+        fname, _ = self.showDialog()
+        self.add(fname)
+    def showDialog(self):
+          return QFileDialog.getOpenFileName(parent = None, caption = "Open File" , filter ='Image Files (*.jpg *.png *.gif)' )
     def setCurrent(self, index):
         self.current = self.files_data[index]
 
@@ -31,13 +36,16 @@ class FreeTrimFileManager(object):
     def isAddedRecently(self, path):
         """同じパスが入ってないか確認"""
         for fp in self.getFiles():
-            if path.as_posix == fp.getPath().as_posix:
+            if path.as_posix() == fp.getPath().as_posix():
                 return True
         return False
     def add(self, fname):
         """ 追加 """
-        new_data = FreeTrimFile(fname)
-        self.files_data.append(file_data)
+        path = fname if isinstance(fname, Path) else Path(fname).resolve()
+        if not path.suffix in (".jpg", ".png" ,".gif"):
+            return
+        new_data = FreeTrimFile(path)
+        self.files_data.append(new_data)
 
     def addFilesByDirPath(self, dir_path):
         """ ディレクトリのパスからまとめて取得する """

@@ -42,7 +42,24 @@ class FreeTrimWidget(QtWidgets.QWidget):
         self.image = QImage()
         self.lastPoint = QPoint()
 
-        self.fManager
+        self.fmanager = fmanager
+        self.changeImage()
+
+    def changeImage(self, arg = None):
+        if arg == None:
+            self.rect_manager, self.img_manager = self.fmanager.getCurrent().getManagers()
+        else :
+            self.rect_manager, self.img_manager = arg.getCurrent().getManagers()
+        self.image = self.img_manager.getMainQImage()
+        height, width, dim = self.img_manager.getMainImage().shape
+        self.setFixedSize(width,height)
+        newSize = self.img_manager.getMainQImage().size().expandedTo(self.size())
+        self.resizeImage(self.img_manager.getMainQImage(), newSize)
+        self.drawAllRect()
+        self.update()
+
+        # self.rect_manager = FreeTrimRectManager()
+        # self.img_manager = FreeTrimImageManager()
     def setFile(self, fname = None):
         if fname == None:
             self.fname, _ = self.showDialog()
@@ -80,8 +97,7 @@ class FreeTrimWidget(QtWidgets.QWidget):
         self.update()
         return True
     def cls(self):
-        height, width, dim = self.cv2img.shape
-        self.image = QImage(self.cv2img.data, width, height, dim * width, QImage.Format_RGB888)
+        self.image = self.img_manager.getMainQImage()
         self.update()
 
 
@@ -101,31 +117,31 @@ class FreeTrimWidget(QtWidgets.QWidget):
 
     def mousePressEvent(self, event):
         if event.button() == Qt.LeftButton:
-            self.rectManager.newRect(event.pos())
+            self.rect_manager.newRect(event.pos())
             self.lastPoint = event.pos()
             self.scribbling = True
-            self.rectManager.updateRectByQPoint(event.pos())
+            self.rect_manager.updateRectByQPoint(event.pos())
 
     def mouseMoveEvent(self, event):
         if (event.buttons() & Qt.LeftButton) and self.scribbling:
             self.drawLineTo(event.pos())
             #print(event.pos())
             #print(event.pos().x(), event.pos().y())
-            self.rectManager.updateRectByQPoint(event.pos())
+            self.rect_manager.updateRectByQPoint(event.pos())
 
     def mouseReleaseEvent(self, event):
         if event.button() == Qt.LeftButton and self.scribbling:
             self.drawLineTo(event.pos())
             self.scribbling = False
-            self.rectManager.updateRectByQPoint(event.pos())
+            self.rect_manager.updateRectByQPoint(event.pos())
             self.cls()
             self.drawAllRect()
-            if not self.rectManager.hasArea():
-                self.rectManager.pop()
+            if not self.rect_manager.hasArea():
+                self.rect_manager.pop()
                 self.cls()
                 return
-            img = self.imgManager.newImage(self.cv2img, self.rectManager.getCurrentRect())
-            cv2.imshow(f"img:{self.rectManager.getCurrentRect()}", img.get()[:,:,::-1])
+            img = self.img_manager.newImage( self.rect_manager.getCurrentRect())
+            #cv2.imshow(f"img:{self.rect_manager.getCurrentRect()}", img.get()[:,:,::-1])
 
     def paintEvent(self, event):
         painter = QPainter(self)
@@ -134,7 +150,7 @@ class FreeTrimWidget(QtWidgets.QWidget):
         #print('paint')
 
     def drawAllRect(self):
-        for rect in self.rectManager.getRects():
+        for rect in self.rect_manager.getRects():
             self.drawRectByFreeTrimRect(rect)
 
     def drawRectByQRect(self, qrect):

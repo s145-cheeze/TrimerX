@@ -16,10 +16,11 @@ from FreeTrimImageManager import *
 
 class FreeTrimPreview(QDialog):
     """どのように切り取られるかを表示"""
-    def __init__(self, parent = None):
+    def __init__(self,fmanager ,  parent = None):
         super(FreeTrimPreview, self).__init__(parent)
 
         self.ft = parent
+        self.fmanager = fmanager
 
         #メイン画面
         self.setGeometry(300, 300, 1024, 768)
@@ -64,17 +65,23 @@ class FreeTrimPreview(QDialog):
 
     def setLabels(self):
         # TODO:ここのクラスの結合を疎にする
-        for i, img in enumerate(self.ft.ftw.imgManager.getImages()):
-            img_name = str( "{}_{}{}".format(self.ft.loaded_image_path.stem, f"00{i}"[-2:], self.ft.loaded_image_path.suffix) )
-            # ファイル名ラベル
+
+        for ft_file in self.fmanager.getFiles():
             self.labels.append(QLabel())
-            s = f"{i}:{img_name}"
+            s = f"<h1>{ft_file.getPath().stem}</h1>"
             self.labels[-1].setText(s)
             self.inner_layout.addWidget(self.labels[-1])
-            # 画像ラベル
-            self.labels.append(QLabel())
-            self.labels[-1].setPixmap(img.getQPixmap())
-            self.inner_layout.addWidget(self.labels[-1])
+            for i, img in enumerate(ft_file.getImageManager().getImages()):
+                img_name = str( "{}_{}{}".format(ft_file.getPath().stem, f"00{i}"[-2:], ft_file.getPath().suffix) )
+                # ファイル名ラベル
+                self.labels.append(QLabel())
+                s = f"{i}:{img_name}"
+                self.labels[-1].setText(s)
+                self.inner_layout.addWidget(self.labels[-1])
+                # 画像ラベル
+                self.labels.append(QLabel())
+                self.labels[-1].setPixmap(img.getQPixmap())
+                self.inner_layout.addWidget(self.labels[-1])
 
 
 

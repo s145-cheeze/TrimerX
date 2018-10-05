@@ -64,6 +64,8 @@ class FreeTrimMain(QWidget):
             # self.close()
         elif arg == FTILS_Result.OK:
             print([f.getFileName() for f in self.fmanager.getFiles()])
+            self.ftw = FreeTrimWindow(self.fmanager)
+            self.ftw.show()
 
             # self.ftw = FreeTrimWindow(fmanager)
             # self.ftw.show()
