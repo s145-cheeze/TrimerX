@@ -139,6 +139,7 @@ class FreeTrimWidget(QtWidgets.QWidget):
             if not self.rect_manager.hasArea():
                 self.rect_manager.pop()
                 self.cls()
+                self.drawAllRect()
                 return
             img = self.img_manager.newImage( self.rect_manager.getCurrentRect())
             #cv2.imshow(f"img:{self.rect_manager.getCurrentRect()}", img.get()[:,:,::-1])
