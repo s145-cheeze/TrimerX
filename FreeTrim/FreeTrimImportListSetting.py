@@ -91,6 +91,7 @@ class FreeTrimImportListSetting(QWidget):
         fname = QFileDialog.getExistingDirectory(parent = self, caption = "Open Directory")
         dir_path = Path(fname)
         self.fmanager.addFilesByDirPath(dir_path)
+        self.path_list_widget.clear()
         for path in self.fmanager.getFiles():
             self.path_list_widget.addItem(path.getFileName())
 
