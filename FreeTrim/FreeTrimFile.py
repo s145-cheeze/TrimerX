@@ -39,3 +39,26 @@ class FreeTrimFile(object):
     def getRectsManager(self):
         """ 矩形をまとめるクラスを返す """
         return self.rect_manager
+
+    def getDataList(self):
+        """ データをリストにして返す """
+        lst = [self.getPathString()]
+        lst.extend([ i for i in self.rect_manager.getRectsForDatalist()])
+        return lst
+    @staticmethod
+    def fromDataList(*data_lst):
+        """ データリストからインスタンスを生成 """
+        if len(data_lst) % 4 != 1:
+            return -1
+        tmp_lst = list(range(4))
+        ret = FreeTrimFile(data_lst[0])
+        rect_manager, img_manager = ret.getManagers()
+        rect_list = []
+
+        for cnt, data in enumerate(data_lst[1:]):
+            i = cnt % 4
+            tmp_lst[i] = int(data)
+            if i != 3 : continue
+            tmp_rect = rect_manager.addRect( *tmp_lst )
+            img_manager.newImage( tmp_rect )
+        return ret

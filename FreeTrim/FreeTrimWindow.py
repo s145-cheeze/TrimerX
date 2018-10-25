@@ -6,7 +6,7 @@ from pathlib import Path
 import cv2
 
 from PyQt5 import QtWidgets
-from PyQt5.QtWidgets import QWidget, QMessageBox, QApplication, QPushButton, QListWidget
+from PyQt5.QtWidgets import QWidget, QMessageBox, QApplication, QPushButton, QListWidget, QAction, QMenuBar
 
 from FreeTrimRect import *
 from FreeTrimRectManager import *
@@ -22,7 +22,25 @@ class FreeTrimWindow(QWidget):
         super().__init__(parent)
         self.fmanager = fmanager
         self.initUI()
+        self.initMenuBar()
         self.updatePathListBox()
+
+    def initMenuBar(self):
+        self.m_bar = QMenuBar(self)
+        menu = self.m_bar.addMenu('ファイル')
+        newAction1 = QAction("保存", self)
+        newAction1.setShortcut("Ctrl+S")
+        menu.addAction(newAction1)
+        newAction1.triggered.connect(self.newTrigger1)
+        newAction2 = QAction("別名で保存", self)
+        newAction2.setShortcut("Ctrl+Alt+S")
+        menu.addAction(newAction2)
+        newAction2.triggered.connect(self.newTrigger1)
+
+    def newTrigger1(self):
+        self.fmanager.saveFile(False)
+    def newTrigger2(self):
+        self.fmanager.saveFile(True)
 
 
 

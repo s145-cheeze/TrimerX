@@ -44,6 +44,11 @@ class FreeTrimMain(QWidget):
         self.btn_ftils_run.clicked.connect(self.btn_ftils_run_clicked)
         self.btns_layout.addWidget(self.btn_ftils_run)
         self.setLayout(self.layout)
+        # 切り取りデータを読み込みして起動
+        self.btn_import_FTData = QPushButton("切り取りデータを読み込みして起動")
+        self.btn_import_FTData.clicked.connect(self.btn_import_FTData_clicked)
+        self.btns_layout.addWidget(self.btn_import_FTData)
+        self.setLayout(self.layout)
 
 
         #終了
@@ -57,6 +62,14 @@ class FreeTrimMain(QWidget):
         self.ftils = FreeTrimImportListSetting(self.fmanager);
         self.ftils.connectFTMain(self)
         self.ftils.show()
+    def btn_import_FTData_clicked(self, event):
+        fmanager = FreeTrimFileManager.fromFile()
+        if fmanager == -1:
+            pass
+        else:
+            self.fmanager = fmanager
+            self.ftw = FreeTrimWindow(self.fmanager)
+            self.ftw.show()
     def ftilsResult(self, arg, fmanager = None):
         print(f"ftilsResult {arg}")
         if arg == FTILS_Result.Cancel:

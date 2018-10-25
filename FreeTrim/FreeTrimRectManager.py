@@ -27,7 +27,17 @@ class FreeTrimRectManager(object):
         """ 全ての矩形データをジェネレーターで流す """
         for rect in self.rects:
             yield rect
+    def get(self, arg):
+        return self.rects[arg]
 
+
+    def getRectsForDatalist(self):
+        """ FreeTrimFileクラスで保存しやすいジェネレーターで返す """
+        for rect in self.rects:
+            yield rect.p1[0]
+            yield rect.p1[1]
+            yield rect.p2[0]
+            yield rect.p2[1]
 
     def pop(self):
         """ 一番後ろの矩形データを取り出す """
@@ -55,7 +65,10 @@ class FreeTrimRectManager(object):
     def updateRectByQPoint(self, pos):
         """ 矩形を更新する """
         self.updateRectByXY(pos.x(), pos.y())
-
+    def addRect(self, *args):
+        newRect = FreeTrimRect(*args)
+        self.rects.append(newRect)
+        return newRect
 
     def newRect(self, pos):
         """ 新しい矩形を作る """
