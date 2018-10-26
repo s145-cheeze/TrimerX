@@ -27,7 +27,7 @@ class FreeTrimFileManager(object):
         fname, _ = self.showDialog()
         self.add(fname)
     def showDialog(self):
-          return QFileDialog.getOpenFileName(parent = None, caption = "Open File" , filter ='Image Files (*.jpg *.png *.gif)' )
+        return QFileDialog.getOpenFileName(parent = None, caption = "Open File" , filter ='Image Files (*.jpg *.png *.gif)' )
     def setCurrent(self, index):
         self.current = self.files_data[index]
 
