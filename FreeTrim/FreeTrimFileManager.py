@@ -76,6 +76,19 @@ class FreeTrimFileManager(object):
     def get(self, index):
         """ インデックスを指定して取得 """
         return self.files_data[index]
+    def saveImages(self, dname = None):
+        """ ディレクトリを指定して保存 """
+        dir_name = QFileDialog.getExistingDirectory(self) if dname is None else dname
+        if len(dir_name) == 0:
+            return
+        print(dir_name)
+
+        for ft_file in self.getFiles():
+            # NOTE:ここのごちゃごちゃなんとかならない？
+            for i, img in enumerate(ft_file.getImageManager().getImages()):
+                img_name = str(Path(dir_name, "{}_{}{}".format(ft_file.getPath().stem, f"00{i}"[-2:], ft_file.getPath().suffix) ))
+                print(img_name)
+                cv2.imwrite(img_name, img.get()[:,:,::-1])
     def saveFile(self, isMakeNewFile = False):
         if self.fname is None or isMakeNewFile:
             self.fname, _ = QFileDialog.getSaveFileName(parent = None, caption = "Save File" , filter ='Free Trim Data (*.ftd)',

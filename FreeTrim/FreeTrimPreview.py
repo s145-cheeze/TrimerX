@@ -19,7 +19,6 @@ class FreeTrimPreview(QDialog):
     def __init__(self,fmanager ,  parent = None):
         super(FreeTrimPreview, self).__init__(parent)
 
-        self.ft = parent
         self.fmanager = fmanager
 
         #メイン画面
@@ -57,7 +56,7 @@ class FreeTrimPreview(QDialog):
         self.setLayout(self.base_layout)
 
     def clicked_OK(self):
-        self.ft.saveImages()
+        self.fmanager.saveImages()
         self.close()
 
     def clicked_Cancel(self):

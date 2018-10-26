@@ -109,17 +109,6 @@ class FreeTrimWindow(QWidget):
         # print(item)
         # print(f"list clicked:{self.path_list_widget.currentRow()}")
 
-    def saveImages(self):
-        dir_name = QFileDialog.getExistingDirectory(self)
-        if len(dir_name) == 0:
-            return
-        print(dir_name)
-
-        for ft_file in self.fmanager.getFiles():
-            for i, img in enumerate(ft_file.getImageManager().getImages()):
-                img_name = str(Path(dir_name, "{}_{}{}".format(ft_file.getPath().stem, f"00{i}"[-2:], ft_file.getPath().suffix) ))
-                print(img_name)
-                cv2.imwrite(img_name, img.get()[:,:,::-1])
 
     def clicked_OK(self):
         print("clicked:OK")
