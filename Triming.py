@@ -7,6 +7,7 @@
 # WARNING! All changes made in this file will be lost!
 
 from PyQt5 import QtCore, QtGui, QtWidgets
+from FreeTrim.FreeTrimMain import *
 
 class Ui_tabWidget(object):
     def setupUi2(self, tabWidget):
@@ -44,7 +45,14 @@ class Ui_tabWidget(object):
         tabWidget.setWindowTitle(_translate("tabWidget", "TabWidget"))
         self.label.setText(_translate("tabWidget", "説明文"))
         self.pushButton.setText(_translate("tabWidget", "PushButton"))
+        self.pushButton.clicked.connect(self.GoFreeTrimingWindow)
         tabWidget.setTabText(tabWidget.indexOf(self.tab), _translate("tabWidget", "自由トリミング"))
         self.label_2.setText(_translate("tabWidget", "説明文"))
         self.pushButton_2.setText(_translate("tabWidget", "PushButton"))
         tabWidget.setTabText(tabWidget.indexOf(self.tab1), _translate("tabWidget", "固定トリミング"))
+
+    def GoFreeTrimingWindow(self, tabWidet):
+        self.widget = QtWidgets()
+        self.ui = FreeTrimMain()
+        self.ui.initUI(self.widget)
+        self.widget.show()
