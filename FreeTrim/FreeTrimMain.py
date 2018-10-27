@@ -63,7 +63,7 @@ class FreeTrimMain(QWidget):
         self.ftils.connectFTMain(self)
         self.ftils.show()
     def btn_import_FTData_clicked(self, event):
-        fmanager = FreeTrimFileManager.fromFile()
+        fmanager = FreeTrimFileManager.fromFile(ft_widget = self)
         if fmanager == -1:
             pass
         else:

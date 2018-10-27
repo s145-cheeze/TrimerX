@@ -79,7 +79,7 @@ class FreeTrimWidget(QtWidgets.QWidget):
 
     def openImage(self, fname):
         """ 画像ファイルを開きます
-        @param fname 読み込む画像ファイルの名前 """"
+        @param fname 読み込む画像ファイルの名前 """
         img = cv2.imread(fname)
         assert not img is None
         self.cv2img = cv2.cvtColor(img,cv2.COLOR_BGR2RGB)

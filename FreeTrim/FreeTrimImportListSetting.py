@@ -117,6 +117,9 @@ class FreeTrimImportListSetting(QWidget):
         self.ft_main.ftilsResult(FTILS_Result.Cancel)
         self.close()
     def btn_OK_clicked(self, event):
+        if not self.fmanager.hasAnyItems():
+            d = QtWidgets.QMessageBox.warning(self," ", "ファイルを一つも読み込んでいません")
+            return
         if self.ft_main is None:
             self.close()
             return
