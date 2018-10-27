@@ -2,7 +2,7 @@
 
 from PyQt5.Qt import QRect
 
-from FreeTrimRect import *
+from FreeTrim.FreeTrimRect import *
 
 class FreeTrimRectManager(object):
     """切り取る範囲の矩形を管理する"""

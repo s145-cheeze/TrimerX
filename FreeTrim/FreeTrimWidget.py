@@ -12,10 +12,10 @@ from PyQt5.QtWidgets import QFileDialog
 
 
 
-from FreeTrimRect import *
-from FreeTrimRectManager import *
-from FreeTrimImage import *
-from FreeTrimImageManager import *
+from FreeTrim.FreeTrimRect import *
+from FreeTrim.FreeTrimRectManager import *
+from FreeTrim.FreeTrimImage import *
+from FreeTrim.FreeTrimImageManager import *
 
 
 

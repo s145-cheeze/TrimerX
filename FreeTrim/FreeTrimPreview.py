@@ -7,10 +7,10 @@ from PyQt5.QtCore import QDir, QPoint, QRect, Qt
 from PyQt5.QtGui import QPixmap
 from PyQt5.QtWidgets import  QApplication, QWidget, QLabel, QScrollArea, QVBoxLayout, QHBoxLayout, QDialog, QPushButton
 
-from FreeTrimRect import *
-from FreeTrimRectManager import *
-from FreeTrimImage import *
-from FreeTrimImageManager import *
+from FreeTrim.FreeTrimRect import *
+from FreeTrim.FreeTrimRectManager import *
+from FreeTrim.FreeTrimImage import *
+from FreeTrim.FreeTrimImageManager import *
 
 
 

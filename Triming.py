@@ -52,7 +52,5 @@ class Ui_tabWidget(object):
         tabWidget.setTabText(tabWidget.indexOf(self.tab1), _translate("tabWidget", "固定トリミング"))
 
     def GoFreeTrimingWindow(self, tabWidet):
-        self.widget = QtWidgets()
-        self.ui = FreeTrimMain()
-        self.ui.initUI(self.widget)
+        self.widget = FreeTrimMain()
         self.widget.show()
