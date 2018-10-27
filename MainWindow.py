@@ -8,8 +8,7 @@
 import sys
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QWidget, QMessageBox, QApplication
-
-
+from Triming import *
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -45,7 +44,14 @@ class Ui_MainWindow(object):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
         self.pushButton_1.setText(_translate("MainWindow", "トリミング"))
+        self.pushButton_1.clicked.connect(self.GoTrimingWindow)
         self.pushButton_2.setText(_translate("MainWindow", "ビューワー"))
         self.pushButton_3.setText(_translate("MainWindow", "採点"))
         self.pushButton_4.setText(_translate("MainWindow", "終了"))
         self.actionK.setText(_translate("MainWindow", "k"))
+
+    def GoTrimingWindow(self, MainWindow):
+        self.widget = QtWidgets.QTabWidget()
+        self.ui = Ui_tabWidget()
+        self.ui.setupUi2(self.widget)
+        self.widget.show()
