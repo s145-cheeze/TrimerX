@@ -49,6 +49,8 @@ class FreeTrimFileManager(object):
             if path.as_posix() == fp.getPath().as_posix():
                 return True
         return False
+    def hasAnyItems(self):
+        return len(self.files_data) > 0
     def add(self, fname):
         """ ファイル追加
         @param fname 追加したいファイル名またはPath
