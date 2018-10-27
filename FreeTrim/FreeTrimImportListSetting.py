@@ -33,7 +33,7 @@ class FreeTrimImportListSetting(QWidget):
         self.initUI()
     def connectFTMain(self, arg):
         """ FreeTrimMainインスタンスを設定します
-        設定する理由：FreeTrimMainに """
+        設定する理由：FreeTrimMainに決定かキャンセルか伝えるため """
         self.ft_main = arg
 
     def initUI(self):
