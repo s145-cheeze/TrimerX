@@ -71,7 +71,8 @@ class FreeTrimRectManager(object):
         return newRect
 
     def newRect(self, pos):
-        """ 新しい矩形を作る """
+        """ 新しい矩形を作る
+        @pram pos 初期座標(QRectクラス) """
         self.minX = pos.x()
         self.minY = pos.y()
         self.maxX = pos.x()
