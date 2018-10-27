@@ -32,6 +32,8 @@ class FreeTrimImportListSetting(QWidget):
         self.fmanager = fmanager
         self.initUI()
     def connectFTMain(self, arg):
+        """ FreeTrimMainインスタンスを設定します
+        設定する理由：FreeTrimMainに """
         self.ft_main = arg
 
     def initUI(self):

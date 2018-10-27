@@ -46,6 +46,8 @@ class FreeTrimWidget(QtWidgets.QWidget):
         self.changeImage()
 
     def changeImage(self, arg = None):
+        """ トリミングする画像を変更する
+        @param 変更したい画像．設定しない場合はFreeTrimFileManagerインスタンスで現在扱っているファイルに変更されます """
         if arg == None:
             self.rect_manager, self.img_manager = self.fmanager.getCurrent().getManagers()
         else :
@@ -61,6 +63,8 @@ class FreeTrimWidget(QtWidgets.QWidget):
         # self.rect_manager = FreeTrimRectManager()
         # self.img_manager = FreeTrimImageManager()
     def setFile(self, fname = None):
+        """ 読み込むファイルを設定します
+        @param fname 読み込みたいファイル名．省略した場合は「ファイルを開く」ダイアログがでます """
         if fname == None:
             self.fname, _ = self.showDialog()
             print(f"fname:{self.fname}")
@@ -70,10 +74,13 @@ class FreeTrimWidget(QtWidgets.QWidget):
 
 
     def showDialog(self):
+        """ 「ファイルを開く」ダイアログを呼びます """
         return QFileDialog.getOpenFileName(parent = self, caption = "Open File" , filter ='Image Files (*.jpg *.png *.gif)' )
 
-    def openImage(self, fileName):
-        img = cv2.imread(fileName)
+    def openImage(self, fname):
+        """ 画像ファイルを開きます
+        @param fname 読み込む画像ファイルの名前 """"
+        img = cv2.imread(fname)
         assert not img is None
         self.cv2img = cv2.cvtColor(img,cv2.COLOR_BGR2RGB)
 
@@ -97,11 +104,15 @@ class FreeTrimWidget(QtWidgets.QWidget):
         self.update()
         return True
     def cls(self):
+        """ 表示画面を初期化します """
         self.image = self.img_manager.getMainQImage()
         self.update()
 
 
     def resizeImage(self, image, newSize):
+        """ 画像ファイルのサイズを変更する
+        @param image 画像ファイル
+        @param newSize 新しいサイズ """
         if image.size() == newSize:
             print("resizeImage:return")
             return
@@ -151,10 +162,13 @@ class FreeTrimWidget(QtWidgets.QWidget):
         #print('paint')
 
     def drawAllRect(self):
+        """ 現在扱っているファイルの矩形データを全て描画する """
         for rect in self.rect_manager.getRects():
             self.drawRectByFreeTrimRect(rect)
 
     def drawRectByQRect(self, qrect):
+        """ 矩形を描画する
+        @param 描画する矩形(QRectクラス) """
         painter = QPainter(self.image)
         painter.setBrush(Qt.NoBrush)
         size = 3
@@ -165,9 +179,13 @@ class FreeTrimWidget(QtWidgets.QWidget):
         self.update(qrect.adjusted(-size, -size, +size, +size))
 
     def drawRectByFreeTrimRect(self,rect):
+        """ 矩形を描画する
+        @param 描画する矩形(FreeTrimRectクラス) """
         self.drawRectByQRect(rect.getQRect())
 
     def drawLineTo(self, endPoint):
+        """ 線を描画する
+        @param endPoint 引きたい線の終点 """
         painter = QPainter(self.image)
         painter.setPen(QPen(self.myPenColor, self.myPenWidth, Qt.SolidLine,
         Qt.RoundCap, Qt.RoundJoin))
@@ -184,6 +202,4 @@ def main():
     ex1.show()
     sys.exit(app.exec_())
 if __name__ == "__main__":
-    main()
-if __name__ == '__main__':
     main()
