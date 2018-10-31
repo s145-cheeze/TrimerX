@@ -1,4 +1,5 @@
 FreeTrim/__pycache__/
+.DS_Store
 *.pyc
 *.ftd
 *.jpg
