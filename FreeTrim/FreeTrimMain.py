@@ -10,17 +10,17 @@ from PyQt5.QtCore import QDir, QPoint, QRect, Qt
 from PyQt5.QtGui import QImage, QPainter, QPen
 from PyQt5.QtWidgets import QWidget, QMessageBox, QApplication, QPushButton, QHBoxLayout, QVBoxLayout, QListWidget, QFileDialog, QLabel
 
-from FreeTrimData import *
-from FreeTrimFile import *
-from FreeTrimFileManager import *
-from FreeTrimImage import *
-from FreeTrimImageManager import *
-from FreeTrimImportListSetting import *
-from FreeTrimPreview import *
-from FreeTrimRect import *
-from FreeTrimRectManager import *
-from FreeTrimWidget import *
-from FreeTrimWindow import *
+from FreeTrim.FreeTrimData import *
+from FreeTrim.FreeTrimFile import *
+from FreeTrim.FreeTrimFileManager import *
+from FreeTrim.FreeTrimImage import *
+from FreeTrim.FreeTrimImageManager import *
+from FreeTrim.FreeTrimImportListSetting import *
+from FreeTrim.FreeTrimPreview import *
+from FreeTrim.FreeTrimRect import *
+from FreeTrim.FreeTrimRectManager import *
+from FreeTrim.FreeTrimWidget import *
+from FreeTrim.FreeTrimWindow import *
 
 class FreeTrimMain(QWidget):
     """ 自由トリミングのメイン画面

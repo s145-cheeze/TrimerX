@@ -4,7 +4,7 @@ from pathlib import Path
 
 import cv2
 
-from FreeTrimImage import *
+from FreeTrim.FreeTrimImage import *
 
 
 class FreeTrimImageManager(object):

@@ -10,8 +10,8 @@ from PyQt5.QtCore import QDir, QPoint, QRect, Qt
 from PyQt5.QtGui import QImage, QPainter, QPen
 from PyQt5.QtWidgets import QWidget, QMessageBox, QApplication, QPushButton
 
-from FreeTrimImageManager import *
-from FreeTrimRectManager import *
+from FreeTrim.FreeTrimImageManager import *
+from FreeTrim.FreeTrimRectManager import *
 
 class FreeTrimFile(object):
     """ファイルの情報をまとめる"""

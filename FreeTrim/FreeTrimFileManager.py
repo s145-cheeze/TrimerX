@@ -12,7 +12,7 @@ from PyQt5.QtCore import QDir, QPoint, QRect, Qt
 from PyQt5.QtGui import QImage, QPainter, QPen
 from PyQt5.QtWidgets import QWidget, QMessageBox, QApplication, QPushButton, QFileDialog
 
-from FreeTrimFile import *
+from FreeTrim.FreeTrimFile import *
 
 class FreeTrimFileManager(object):
     """FreeTrimFileクラスを管理する"""

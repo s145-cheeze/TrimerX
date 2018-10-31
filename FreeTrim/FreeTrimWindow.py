@@ -8,13 +8,13 @@ import cv2
 from PyQt5 import QtWidgets
 from PyQt5.QtWidgets import QWidget, QMessageBox, QApplication, QPushButton, QListWidget, QAction, QMenuBar
 
-from FreeTrimRect import *
-from FreeTrimRectManager import *
-from FreeTrimImage import *
-from FreeTrimImageManager import *
-from FreeTrimFileManager import *
-from FreeTrimWidget import *
-from FreeTrimPreview import *
+from FreeTrim.FreeTrimRect import *
+from FreeTrim.FreeTrimRectManager import *
+from FreeTrim.FreeTrimImage import *
+from FreeTrim.FreeTrimImageManager import *
+from FreeTrim.FreeTrimFileManager import *
+from FreeTrim.FreeTrimWidget import *
+from FreeTrim.FreeTrimPreview import *
 
 class FreeTrimWindow(QWidget):
     """トリミング部分と操作ボタンの画面"""
