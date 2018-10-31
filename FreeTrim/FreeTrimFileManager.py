@@ -98,6 +98,14 @@ class FreeTrimFileManager(object):
     def get(self, index):
         """ インデックスを指定して取得 """
         return self.files_data[index]
+    def ImageName(self, ft_file, index):
+        """ 切り取り画像のファイル名生成
+        @param index 生成したい番号 """
+        fstem  = ft_file.getPath().stem
+        number = f"{index:02d}"
+        ext    = ft_file.getPath().suffix
+        img_name  = f"{fstem}_{number}{ext}"
+        return img_name
     def saveImages(self, dname = None, ft_widget = None):
         """ ディレクトリを指定して保存 """
         dir_name = QFileDialog.getExistingDirectory(parent = ft_widget) if dname is None else dname
