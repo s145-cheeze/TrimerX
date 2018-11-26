@@ -65,6 +65,14 @@ class FreeTrimWindow(QWidget):
         self.btnUndo.clicked.connect(self.clicked_Undo)
         self.vbox.addWidget(self.btnUndo)
 
+        self.btnSave = QPushButton('保存')
+        self.btnSave.clicked.connect(self.newTrigger1)
+        self.vbox.addWidget(self.btnSave)
+
+        self.btnSaveAs = QPushButton('別名で保存')
+        self.btnSaveAs.clicked.connect(self.newTrigger2)
+        self.vbox.addWidget(self.btnSaveAs)
+
         #メイン画面
         self.scrollArea = QScrollArea()
         self.inner = QWidget()
