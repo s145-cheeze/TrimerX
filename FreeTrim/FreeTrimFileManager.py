@@ -57,11 +57,15 @@ class FreeTrimFileManager(object):
         @return 追加できたらTrueできなかったらFalse """
         path = fname if isinstance(fname, Path) else Path(fname).resolve()
         #拡張子の確認
-        if not path.suffix in (".jpg", ".png" ,".gif"):
+        if not path.suffix in (".jpg", ".png" ,".gif", ".JPG", ".PNG" ,".GIF"):
             return False
         if self.isAddedRecently(path):
             return False
-        new_data = FreeTrimFile(path)
+        try:
+            new_data = FreeTrimFile(path)
+        except TypeError as e:
+            print(e)
+            return False
         self.files_data.append(new_data)
         return True
 
@@ -124,7 +128,7 @@ class FreeTrimFileManager(object):
                 cv2.imwrite(img_name, img.get()[:,:,::-1])
     def saveFile(self, isMakeNewFile = False, FTparent = None):
         if self.fname is None or isMakeNewFile:
-            self.fname, _ = QFileDialog.getSaveFileName(parent = ft_widget, caption = "Save File" , filter ='Free Trim Data (*.ftd)',
+            self.fname, _ = QFileDialog.getSaveFileName(parent = FTparent, caption = "Save File" , filter ='Free Trim Data (*.ftd)',
                 directory = './FreeTrimData({}).ftd'.format(
                         datetime.datetime.now().strftime('%Y-%m-%d-%H-%M-%S')
                     )
