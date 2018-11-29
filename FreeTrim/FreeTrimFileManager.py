@@ -40,11 +40,16 @@ class FreeTrimFileManager(object):
         if self.current == None:
             self.setCurrent(0)
         return self.current
+    def getMaxLength(self):
+        """ 切り取り画像を集めているリストの長さの中で最長はいくつかを返す
+        @return 大きい切り取り画像リストの長さ"""
+        return max([ft_file.getImageManager().getLength() for ft_file in self.getFiles()])
+
     def getImagesUsingIndex(self, index):
         """ インデックスを指定してその番号の画像を全てのFreeTrimFileインスタンスから取得する
         @param 取得する画像群のインデックス
         @yield タプル:(画像データ, 画像id, 切り取り元ファイル)"""
-        for i, file_data in enumerate(self.files_data):
+        for i, file_data in enumerate(self.getFiles()):
             img_manager = file_data.getImageManager()
             img = img_manager.get(index)
             if img is not None:

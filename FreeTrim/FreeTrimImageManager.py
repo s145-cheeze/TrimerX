@@ -22,6 +22,8 @@ class FreeTrimImageManager(object):
         if abs(index) < len(self.sub_imgs) or index == -len(self.sub_imgs):
             return self.sub_imgs[index]
         return None
+    def getLength(self):
+        return len(self.sub_imgs)
     def getImages(self):
         for img in self.sub_imgs:
             yield img
