@@ -28,7 +28,7 @@ class FreeTrimMain(QWidget):
     def __init__(self):
         super(FreeTrimMain, self).__init__()
 
-        self.fmanager = FreeTrimFileManager()
+        self.fmanager = None
 
         self.initUI()
     def initUI(self):
@@ -58,6 +58,7 @@ class FreeTrimMain(QWidget):
         self.setLayout(self.layout)
 
     def btn_ftils_run_clicked(self, event):
+        self.fmanager = FreeTrimFileManager()
         # ftils = FreeTrimImportListSettingの単語の頭文字
         self.ftils = FreeTrimImportListSetting(self.fmanager);
         self.ftils.connectFTMain(self)
@@ -73,7 +74,7 @@ class FreeTrimMain(QWidget):
     def ftilsResult(self, arg, fmanager = None):
         print(f"ftilsResult {arg}")
         if arg == FTILS_Result.Cancel:
-            pass
+            self.fmanager = None
             # self.close()
         elif arg == FTILS_Result.OK:
             print([f.getFileName() for f in self.fmanager.getFiles()])
