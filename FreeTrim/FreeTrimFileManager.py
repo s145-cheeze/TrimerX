@@ -28,6 +28,7 @@ class FreeTrimFileManager(object):
         self.add(fname)
     def showDialog(self, ft_widget = None):
         return QFileDialog.getOpenFileName(parent = ft_widget, caption = "Open File" , filter ='Image Files (*.jpg *.png *.gif)' )
+    # getter/setter------------------------------------------------------------
     def setCurrent(self, index):
         """ FreeTrimFileインスタンスを選択
         @param index 選択するFreeTrimFileインスタンスの番号 """
@@ -39,7 +40,26 @@ class FreeTrimFileManager(object):
         if self.current == None:
             self.setCurrent(0)
         return self.current
-
+    def getImagesUsingIndex(self, index):
+        """ インデックスを指定してその番号の画像を全てのFreeTrimFileインスタンスから取得する
+        @param 取得する画像群のインデックス
+        @yield タプル:(画像データ, 画像id, 切り取り元ファイル)"""
+        for i, file_data in enumerate(self.files_data):
+            img_manager = file_data.getImageManager()
+            img = img_manager.get(index)
+            if img is not None:
+                yield img, i, file_data
+    def get(self, index):
+        """ インデックスを指定して取得 """
+        return self.files_data[index]
+    def getFiles(self):
+        """ 全部取得 """
+        for file_data in self.files_data:
+            yield file_data
+    def getDataLists(self):
+        for file_data in self.files_data:
+            yield file_data.getDataList()
+    # チェック用関数------------------------------------------------------------------
     def isAddedRecently(self, path):
         """ 同じパスが入ってないか確認
         @return 同じパスが入っていたらTrue,でなければFalse """
@@ -51,6 +71,7 @@ class FreeTrimFileManager(object):
         return False
     def hasAnyItems(self):
         return len(self.files_data) > 0
+    #追加用関数---------------------------------------------------------------------
     def add(self, fname):
         """ ファイル追加
         @param fname 追加したいファイル名またはPath
@@ -81,28 +102,7 @@ class FreeTrimFileManager(object):
             if self.add(path):
                 cnt += 1
         return cnt if cnt > 0 else -1
-
-
-    def getImagesUsingIndex(self, index):
-        """ インデックスを指定してその番号の画像を全てのFreeTrimFileインスタンスから取得する
-        @param 取得する画像群のインデックス
-        @yield タプル:(画像データ, 画像id, 切り取り元ファイル)"""
-        for i, file_data in enumerate(self.files_data):
-            img_manager = file_data.getImageManager()
-            img = img_manager.get(index)
-            if img is not None:
-                yield img, i, file_data
-    def getFiles(self):
-        """ 全部取得 """
-        for file_data in self.files_data:
-            yield file_data
-    def getDataLists(self):
-        for file_data in self.files_data:
-            yield file_data.getDataList()
-
-    def get(self, index):
-        """ インデックスを指定して取得 """
-        return self.files_data[index]
+    #ファイル関係--------------------------------------------------------------------
     def ImageName(self, ft_file, index):
         """ 切り取り画像のファイル名生成
         @param index 生成したい番号
@@ -152,21 +152,6 @@ class FreeTrimFileManager(object):
         if self.isAddedRecently(new_data.getPath()):
             return 0
         self.files_data.append(new_data)
-    #
-    #
-    #
-    # def importDataLists(self, dlists):
-    #     for dlist in dlists:
-    #         self.importDataList(dlist)
-    #
-    # def importFile(self, fname = None):
-    #     if self.fname is None and fname is None:
-    #         self.fname = FreeTrimFileManager.getOpenDataFileDilalog()
-    #     if self.fname == '':
-    #         return -1
-    #     path = Path(fname)
-
-
     @staticmethod
     def getOpenDataFileDilalog(ft_widget = None):
         return QFileDialog.getOpenFileName(parent = ft_widget, caption = "Open File" , filter ='Free Trim Data (*.ftd)' )[0]
