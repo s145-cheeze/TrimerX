@@ -85,12 +85,13 @@ class FreeTrimFileManager(object):
 
     def getImagesUsingIndex(self, index):
         """ インデックスを指定してその番号の画像を全てのFreeTrimFileインスタンスから取得する
-        @param 取得する画像群のインデックス """
-        for file_data in self.files_data:
+        @param 取得する画像群のインデックス
+        @yield タプル:(画像データ, 画像id, 切り取り元ファイル)"""
+        for i, file_data in enumerate(self.files_data):
             img_manager = file_data.getImageManager()
             img = img_manager.get(index)
-            yield img
-
+            if img is not None:
+                yield img, i, file_data
     def getFiles(self):
         """ 全部取得 """
         for file_data in self.files_data:
@@ -104,7 +105,8 @@ class FreeTrimFileManager(object):
         return self.files_data[index]
     def ImageName(self, ft_file, index):
         """ 切り取り画像のファイル名生成
-        @param index 生成したい番号 """
+        @param index 生成したい番号
+        @para, ft_file 生成したいファイル名の元ファイル"""
         fstem  = ft_file.getPath().stem
         number = f"{index:02d}"
         ext    = ft_file.getPath().suffix
