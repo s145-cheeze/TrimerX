@@ -18,7 +18,8 @@ class FreeTrimImageManager(object):
     def getMainQImage(self):
         img = self.main_img.copy()
         return QImage(img.data, img.shape[1], img.shape[0], img.shape[1] * img.shape[2], QImage.Format_RGB888)
-    def getImages(self, index):
+    def getImage(self, index):
+        if len(self.sub_imgs) == 0 :return None
         if abs(index) < len(self.sub_imgs) or index == -len(self.sub_imgs):
             return self.sub_imgs[index]
         return None

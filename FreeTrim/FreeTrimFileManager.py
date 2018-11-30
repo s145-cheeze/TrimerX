@@ -45,15 +45,32 @@ class FreeTrimFileManager(object):
         @return 大きい切り取り画像リストの長さ"""
         return max([ft_file.getImageManager().getLength() for ft_file in self.getFiles()])
 
+    def getGeneratorMax(self):
+        """ getImagesUsingIndexで返されるジェネレータの大きさの最大を返す
+        @return 大きい切り取り画像リストの長さ"""
+        length = self.getMaxLength()
+        return max([ self.getImagesUsingIndexLength(i) for i in range(length)])
+
     def getImagesUsingIndex(self, index):
-        """ インデックスを指定してその番号の画像を全てのFreeTrimFileインスタンスから取得する
+        """ インデックスを指定してその番号の画像を全てのFreeTrimFileインスタンスから取得するジェネレーターを返す
         @param 取得する画像群のインデックス
         @yield タプル:(画像データ, 画像id, 切り取り元ファイル)"""
         for i, file_data in enumerate(self.getFiles()):
             img_manager = file_data.getImageManager()
-            img = img_manager.get(index)
+            img = img_manager.getImage(index)
             if img is not None:
                 yield img, i, file_data
+    def getImagesUsingIndexLength(self, index):
+        """ getImagesUsingIndexLengthが生成するジェネレーターの大きさを返す
+        @param 取得する画像群のインデックス
+        @return ジェネレーターの大きさ"""
+        cnt = 0
+        for i, file_data in enumerate(self.getFiles()):
+            img_manager = file_data.getImageManager()
+            img = img_manager.getImage(index)
+            if img is not None:
+                cnt += 1
+        return cnt
     def get(self, index):
         """ インデックスを指定して取得 """
         return self.files_data[index]
