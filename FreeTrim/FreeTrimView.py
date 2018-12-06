@@ -5,7 +5,7 @@ import sys
 from PyQt5 import QtWidgets, QtGui
 from PyQt5.QtCore import QDir, QPoint, QRect, Qt
 from PyQt5.QtGui import QPixmap
-from PyQt5.QtWidgets import  QApplication, QWidget, QLabel, QScrollArea, QVBoxLayout, QHBoxLayout, QDialog, QPushButton, QListWidget
+from PyQt5.QtWidgets import  QApplication, QWidget, QLabel, QScrollArea, QFormLayout, QVBoxLayout, QHBoxLayout, QDialog, QPushButton, QListWidget, QStackedWidget
 
 from FreeTrim.FreeTrimRect import *
 from FreeTrim.FreeTrimRectManager import *
@@ -25,13 +25,12 @@ class FreeTrimView(QWidget):
         #メイン画面
         self.setGeometry(300, 300, 1024, 768)
         self.scrollArea = QScrollArea()
-        self.inner = QWidget()
-        self.inner_layout = QVBoxLayout()
-        self.inner.setLayout(self.inner_layout)
+        self.inner = QStackedWidget()
+        self.sub_inner = FTViewSubWidget(self.inner,self.fmanager,0)
+        self.inner.addWidget(self.sub_inner)
+        self.inner.setCurrentWidget(self.sub_inner)
+        self.sub_widgets = []
         self.labels = []
-
-        #ラベルを貼る
-        self.initLabels()
 
         #プレビュー画面
         self.scrollArea.setWidget(self.inner)
@@ -58,16 +57,6 @@ class FreeTrimView(QWidget):
         #メイン画面のレイアウトの設定
         self.setLayout(self.base_layout)
 
-    def initLabels(self):
-        self.maxLength = self.fmanager.getGeneratorMax()
-        for i in range(self.maxLength):
-            # ファイル名ラベル
-            self.labels.append(QLabel(f"{i}"))
-            self.inner_layout.addWidget(self.labels[-1])
-            # 画像ラベル
-            self.labels.append(QLabel())
-            self.inner_layout.addWidget(self.labels[-1])
-
     def clicked_OK(self):
         self.fmanager.saveImages()
         self.close()
@@ -84,21 +73,52 @@ class FreeTrimView(QWidget):
         self.list_widget.currentRowChanged.connect(self.listMove)
         self.side_layout.addWidget(self.list_widget)
     def listMove(self, index):
-        print(index)
+        #print(index)
         self.setLabels(index)
     def setLabels(self,index):
-        for label in self.labels:
-            label.clear()
-        for i, p in enumerate(self.fmanager.getImagesUsingIndex(index)):
+        tmp = self.sub_inner
+        self.sub_inner = FTViewSubWidget(self, self.fmanager, index)
+        self.inner.addWidget(self.sub_inner)
+        self.inner.setCurrentWidget(self.sub_inner)
+        self.inner.removeWidget(tmp)
+
+class FTViewSubWidget(QWidget):
+    def __init__(self, parent, fmanager, index):
+        super(FTViewSubWidget, self).__init__(parent)
+        self.sub_widgets = []
+        box = QVBoxLayout()
+        self.setLayout(box)
+        for i, p in enumerate(fmanager.getImagesUsingIndex(index)):
             img, ft_id, ft_file = p
+            sub_widget = FTViewSubSubWidget(self)
+            self.sub_widgets.append(sub_widget)
             img_name = str( "{}_{}{}".format(ft_file.getPath().stem, f"00{i}"[-2:], ft_file.getPath().suffix) )
-            print(img_name)
             # ファイル名ラベル
-            s = str(f"{i}:{img_name}")
-            self.labels[2*i].setText(s)
-            # 画像ラベル
-            self.labels[2*i+1].setPixmap(img.getQPixmap())
-            self.labels[2*i+1].setMinimumSize(img.getQPixmap().size())
+            s = f"{i+1}:{img_name}"
+            sub_widget.setImg(s, img)
+            box.addWidget(sub_widget)
+
+
+class FTViewSubSubWidget(QWidget):
+    def __init__(self, parent = None):
+        super(FTViewSubSubWidget, self).__init__(parent)
+        self.name          = QLabel()
+        self.img_widget    = QWidget()
+        self.img           = QLabel(self.img_widget)
+        self.layout        = QVBoxLayout()
+        self.layout.addWidget(self.name)
+        self.layout.addWidget(self.img)
+        self.setLayout(self.layout)
+    def setImg(self, name, img):
+        self.resize(img.getQPixmap().size())
+        self.name.setText(name)
+        self.img.setPixmap(img.getQPixmap())
+        self.img.resize(img.getQPixmap().size())
+        self.img_widget.resize(img.getQPixmap().size())
+    def cls(self):
+        self.name.clear()
+        self.img.clear()
+
 
 
 
