@@ -38,6 +38,7 @@ class FreeTrimView(QWidget):
 
         #サイドのボタン
         self.side = QWidget()
+        self.side.setFixedWidth(200)
         self.side_layout = QVBoxLayout()
         self.side.setLayout(self.side_layout)
         self.sideBtnOK = QPushButton('全ての画像を保存')
