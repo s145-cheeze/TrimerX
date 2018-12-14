@@ -96,7 +96,7 @@ def main():
         for file in files:
             name, ext = os.path.splitext(file)
             print(name)
-            if ext.lower() not in {'.jpg'}:
+            if ext.lower() not in {".jpg", ".png" ,".gif", ".JPG", ".PNG" ,".GIF"}:
                 continue
             file_path = os.path.join(root, file)
             image = cv2.imread(file_path)

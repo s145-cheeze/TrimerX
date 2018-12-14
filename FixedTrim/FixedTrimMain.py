@@ -10,7 +10,7 @@ from PyQt5.QtCore import QDir, QPoint, QRect, Qt
 from PyQt5.QtGui import QImage, QPainter, QPen
 from PyQt5.QtWidgets import QWidget, QMessageBox, QApplication, QPushButton, QHBoxLayout, QVBoxLayout, QListWidget, QFileDialog, QLabel
 
-#from FixedTrim.FixedTrimWidget import *
+from FixedTrim.FixedTrimWidget import *
 from FixedTrim.FixedTrimWindow import *
 
 class FixedTrimMain(QWidget):
@@ -35,11 +35,12 @@ class FixedTrimMain(QWidget):
         self.btn_ftils_run.clicked.connect(self.btn_ftils_run_clicked)
         self.btns_layout.addWidget(self.btn_ftils_run)
         self.setLayout(self.layout)
+
         # 切り取りデータを読み込みして起動
-        self.btn_import_FTData = QPushButton("切り取りデータを読み込みして起動")
-        self.btn_import_FTData.clicked.connect(self.btn_import_FTData_clicked)
-        self.btns_layout.addWidget(self.btn_import_FTData)
-        self.setLayout(self.layout)
+        #self.btn_import_FTData = QPushButton("切り取りデータを読み込みして起動")
+        #self.btn_import_FTData.clicked.connect(self.btn_import_FTData_clicked)
+        #self.btns_layout.addWidget(self.btn_import_FTData)
+        #self.setLayout(self.layout)
 
 
         #終了
