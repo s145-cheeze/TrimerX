@@ -5,7 +5,7 @@ from . import FixedTrimFile
 from . import FixedTrimFileManager
 from . import FixedTrimImage
 from . import FixedTrimImageManager
-#from . import FixedTrimImportListSetting
+from . import FixedTrimImportListSetting
 #from . import FixedTrimPreview
 from . import FixedTrimRect
 #from . import FixedTrimRectManager

@@ -18,7 +18,7 @@ class FixedTrimFile(object):
         # ファイルの場所，名前→
         self.path = path if isinstance(path, Path) else Path(path).resolve()
         # 切り取る領域を保存するとこ
-        self.rect_manager = FixedTrimRectManager()
+        # self.rect_manager = FixedTrimRectManager()
         # 切り取った画像を保存しているところ
         self.img_manager = FixedTrimImageManager(self.path)
     def getRectManager(self):

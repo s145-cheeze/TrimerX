@@ -116,6 +116,7 @@ class FixedTrimImportListSetting(QWidget):
             return
         self.ft_main.ftilsResult(FTILS_Result.Cancel)
         self.close()
+
     def btn_OK_clicked(self, event):
         if not self.fmanager.hasAnyItems():
             d = QtWidgets.QMessageBox.warning(self," ", "ファイルを一つも読み込んでいません")
@@ -125,6 +126,7 @@ class FixedTrimImportListSetting(QWidget):
             return
         self.ft_main.ftilsResult(FTILS_Result.OK, self.fmanager)
         self.close()
+
     def setPathListBox(self):
         self.path_list_widget = QListWidget()
         self.path_list_widget.setMinimumSize(200,400)

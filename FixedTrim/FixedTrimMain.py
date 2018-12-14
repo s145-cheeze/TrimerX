@@ -15,6 +15,7 @@ from FixedTrim.FixedTrimFile import *
 from FixedTrim.FixedTrimFileManager import *
 from FixedTrim.FixedTrimImage import *
 from FixedTrim.FixedTrimImageManager import *
+from FixedTrim.FixedTrimImportListSetting import *
 from FixedTrim.FixedTrimRect import *
 from FixedTrim.FixedTrimWidget import *
 from FixedTrim.FixedTrimWindow import *
@@ -58,9 +59,10 @@ class FixedTrimMain(QWidget):
     def btn_ftils_run_clicked(self, event):
         self.fmanager = FixedTrimFileManager()
         # ftils = FixedTrimImportListSettingの単語の頭文字
-        #self.ftils = FixedTrimImportListSetting(self.fmanager);
+        self.ftils = FixedTrimImportListSetting(self.fmanager);
         self.ftils.connectFTMain(self)
         self.ftils.show()
+
     def btn_import_FTData_clicked(self, event):
         fmanager = FixedTrimFileManager.fromFile(ft_widget = self)
         if fmanager == -1:
