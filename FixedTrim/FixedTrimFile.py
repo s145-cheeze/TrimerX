@@ -11,7 +11,6 @@ from PyQt5.QtGui import QImage, QPainter, QPen
 from PyQt5.QtWidgets import QWidget, QMessageBox, QApplication, QPushButton
 
 from FixedTrim.FixedTrimImageManager import *
-from FixedTrim.FixedTrimRectManager import *
 
 class FixedTrimFile(object):
     """ファイルの情報をまとめる"""

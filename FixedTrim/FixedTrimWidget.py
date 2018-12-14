@@ -107,7 +107,6 @@ class FixedTrimWidget(QtWidgets.QWidget):
         self.image = self.img_manager.getMainQImage()
         self.update()
 
-
     def resizeImage(self, image, newSize):
         """ 画像ファイルのサイズを変更する
         @param image 画像ファイル

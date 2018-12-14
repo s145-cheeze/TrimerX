@@ -8,12 +8,11 @@ import cv2
 from PyQt5 import QtWidgets
 from PyQt5.QtWidgets import QWidget, QMessageBox, QApplication, QPushButton, QListWidget, QAction, QMenuBar
 
-#from FixedTrim.FixedTrimRect import *
-#from FixedTrim.FixedTrimRectManager import *
-#from FixedTrim.FixedTrimImage import *
-#from FixedTrim.FixedTrimImageManager import *
-#from FixedTrim.FixedTrimFileManager import *
-#from FixedTrim.FixedTrimWidget import *
+from FixedTrim.FixedTrimRect import *
+from FixedTrim.FixedTrimImage import *
+from FixedTrim.FixedTrimImageManager import *
+from FixedTrim.FixedTrimFileManager import *
+from FixedTrim.FixedTrimWidget import *
 #from FixedTrim.FixedTrimPreview import *
 
 class FixedTrimWindow(QWidget):
