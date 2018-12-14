@@ -24,7 +24,7 @@ class FixedTrimMain(QWidget):
         self.initUI()
     def initUI(self):
         self.layout = QVBoxLayout()
-        self.lbl_title = QLabel("<h1>TrimerX 自由トリミングモード</h1>")
+        self.lbl_title = QLabel("<h1>TrimerX 固定トリミングモード</h1>")
         self.layout.addWidget(self.lbl_title)
 
         self.btns_layout = QVBoxLayout()

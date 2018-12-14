@@ -45,13 +45,13 @@ class Ui_tabWidget(object):
         _translate = QtCore.QCoreApplication.translate
 
         tabWidget.setWindowTitle(_translate("tabWidget", "TabWidget"))
-        self.label.setText(_translate("tabWidget", "説明文"))
-        self.pushButton.setText(_translate("tabWidget", "PushButton"))
+        self.label.setText(_translate("tabWidget", "この機能は入力画像内で選択した左上の座標と右下の座標から四角に切り取る機能である。"))
+        self.pushButton.setText(_translate("tabWidget", "自動トリミングモード"))
         self.pushButton.clicked.connect(self.GoFreeTrimingWindow)
         tabWidget.setTabText(tabWidget.indexOf(self.tab), _translate("tabWidget", "自由トリミング"))
 
-        self.label_2.setText(_translate("tabWidget", "説明文"))
-        self.pushButton_2.setText(_translate("tabWidget", "PushButton"))
+        self.label_2.setText(_translate("tabWidget", "この機能は入力画像内の四角い枠を認識し切り取る機能である。"))
+        self.pushButton_2.setText(_translate("tabWidget", "固定トリミングモード"))
         self.pushButton_2.clicked.connect(self.GoFixedTrimingWindow)
         tabWidget.setTabText(tabWidget.indexOf(self.tab1), _translate("tabWidget", "固定トリミング"))
 
