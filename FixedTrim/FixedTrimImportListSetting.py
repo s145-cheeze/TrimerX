@@ -10,9 +10,9 @@ from PyQt5 import QtWidgets, QtGui
 from PyQt5.QtCore import QDir, QPoint, QRect, Qt
 from PyQt5.QtGui import QImage, QPainter, QPen, QPixmap
 from PyQt5.QtWidgets import QWidget, QMessageBox, QApplication, QPushButton, QHBoxLayout, QVBoxLayout, QListWidget, QFileDialog, QLabel
-
 from FixedTrim.FixedTrimFileManager import *
 
+from FixedTrim.m import *
 
 
 class FTILS_Result(Enum):

@@ -20,6 +20,8 @@ from FixedTrim.FixedTrimRect import *
 from FixedTrim.FixedTrimWidget import *
 from FixedTrim.FixedTrimWindow import *
 
+from FixedTrim.m import *
+
 class FixedTrimMain(QWidget):
     """ 自由トリミングのメイン画面
     起動の仕方を指定する """
@@ -78,8 +80,7 @@ class FixedTrimMain(QWidget):
             # self.close()
         elif arg == FTILS_Result.OK:
             print([f.getFileName() for f in self.fmanager.getFiles()])
-            self.ftw = FixedTrimWindow(self.fmanager)
-            self.ftw.show()
+            load_files(self.fmanager)
 
             # self.ftw = FixedTrimWindow(fmanager)
             # self.ftw.show()

@@ -86,6 +86,20 @@ def cut_frames(image):
     return frames
 
 
+def load_files(fmng):
+    rel_path = os.path.relpath(".", SRC_DIR)
+    dst_dir = os.path.join(DST_DIR, rel_path)
+    for file in fmng.getFiles():
+        name, ext = os.path.splitext(file.getPathString())
+        file_path = file.getPathString()
+        image = cv2.imread(file_path)
+        frames = cut_frames(image)
+        for i, frame in enumerate(frames):
+            print(i)
+            dst_path = os.path.join(dst_dir, name + '_' + str(i + 1) + ext)
+            cv2.imwrite(dst_path, frame)
+
+
 def main():
     for root, dirs, files in os.walk(SRC_DIR):
         rel_path = os.path.relpath(root, SRC_DIR)
