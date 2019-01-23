@@ -15,6 +15,10 @@ class AnswerManageData(object):
             yield number, scoring
     def get(self, index):
         return self.numbers[index], self.scorings[index]
+    def getNumbers(self):
+        return self.numbers
+    def getScorings(self):
+        return self.scorings
     @staticmethod
     def fromCSV(fname):
         numbers = []
@@ -22,6 +26,9 @@ class AnswerManageData(object):
         with open(fname,"r") as f:
             reader = csv.reader(f)
             for row in reader:
+                if len(row) != 2:
+                    return None
                 number, scoring = row
                 numbers.append(number)
                 scorings.append(int(scoring))
+        return AnswerManageData(numbers,scorings)

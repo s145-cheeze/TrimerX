@@ -4,6 +4,7 @@ import sys
 import csv
 import datetime
 from pathlib import Path
+import pickle
 
 import cv2
 
@@ -192,3 +193,19 @@ class FreeTrimFileManager(object):
             for row in reader:
                 ret.importDataList(row)
         return ret
+    def saveFile_(self):
+        fname, _ = QFileDialog.getSaveFileName(parent = None, caption = "Save File" , filter ='Free Trim Data Serialized (*.ftds)',
+            directory = './TrimerXAnswerCheckData({}).txacd'.format(
+                    datetime.datetime.now().strftime('%Y-%m-%d-%H-%M-%S')
+                )
+            )
+        with open(fname,"wb") as f:
+            pickle.dump(self, f)
+    @staticmethod
+    def loadFile_(fname = None):
+        if fname is None:
+            fname , _ =QFileDialog.getOpenFileName(parent = None, caption = "Open File" , filter ='Free Trim Data Serialized (*.ftds)')
+        if fname == '':
+            return -1
+        with open(fname,"rb") as f:
+            return pickle.load(f, encoding="ASCII")
