@@ -7,117 +7,48 @@ from PyQt5.QtCore import QDir, QPoint, QRect, Qt
 from PyQt5.QtGui import QPixmap
 from PyQt5.QtWidgets import  QApplication, QWidget, QLabel, QScrollArea, QFormLayout, QVBoxLayout, QHBoxLayout, QDialog, QPushButton, QListWidget, QStackedWidget
 
-from FreeTrim.FreeTrimRect import *
-from FreeTrim.FreeTrimRectManager import *
-from FreeTrim.FreeTrimImage import *
-from FreeTrim.FreeTrimImageManager import *
-from FreeTrim.FreeTrimFileManager import *
+from AnsChk.AnsChkImportListSetting import *
+from AnsChk.FileForm import *
+from AnsChk.StudentManager import *
+from AnsChk.AnswerCheck import *
 
 
-class AnswerCheck(QWidget):
-    """ 切り取ったやつを表示 """
-    # セットアップ-------------------------------------------------------------------
-    def __init__(self, fmanager = None,  parent = None):
-        super(FreeTrimView, self).__init__(parent)
 
-        self.fmanager = fmanager if fmanager is not None else FreeTrimFileManager.fromFile(ft_widget = self)
+class AnswerCheckMain(QWidget):
+    def __init__(self):
+        super(AnswerCheckMain, self).__init__()
 
-        #メイン画面
-        self.setGeometry(300, 300, 1024, 768)
-        self.scrollArea = QScrollArea()
-        self.inner = QStackedWidget()
-        self.sub_inner = FTViewSubWidget(self.inner,self.fmanager,0)
-        self.inner.addWidget(self.sub_inner)
-        self.inner.setCurrentWidget(self.sub_inner)
-        self.sub_widgets = []
-        self.labels = []
+        self.fmanager = None
 
-        #プレビュー画面
-        self.scrollArea.setWidget(self.inner)
-        self.base_layout = QHBoxLayout()
+        self.initUI()
+    def initUI(self):
+        self.layout = QVBoxLayout()
+        self.lbl_title = QLabel("<h1>TrimerX 採点モード</h1>")
+        self.layout.addWidget(self.lbl_title)
 
-        #サイドのボタン
-        self.side = QWidget()
-        self.side_layout = QVBoxLayout()
-        self.side.setLayout(self.side_layout)
-        self.sideBtnOK = QPushButton('全ての画像を保存')
-        self.sideBtnOK.clicked.connect(self.clicked_OK)
-        self.sideBtnCancel = QPushButton('終了')
-        self.sideBtnCancel.clicked.connect(self.clicked_Cancel)
-        self.side_layout.addWidget(self.sideBtnOK)
-        self.side_layout.addWidget(self.sideBtnCancel)
+        self.btns_layout = QVBoxLayout()
 
-        self.setListBox()
+        self.btn_acils_run = QPushButton("起動")
+        self.btn_acils_run.clicked.connect(self.btn_acils_run_clicked)
+        self.btns_layout.addWidget(self.btn_acils_run)
 
+        # self.btn_import_FTData = QPushButton("途中データを読み込みして起動")
+        # self.btn_import_FTData.clicked.connect(self.btn_import_FTData_clicked)
+        # self.btns_layout.addWidget(self.btn_import_FTData)
 
-        #上記２つをメイン画面に追加
-        self.base_layout.addWidget(self.side)
-        self.base_layout.addWidget(self.scrollArea)
+        #終了
+        self.btn_close = QPushButton("終了")
+        self.btn_close.clicked.connect(self.close)
+        self.btns_layout.addWidget(self.btn_close)
 
-        #メイン画面のレイアウトの設定
-        self.setLayout(self.base_layout)
-
-    def clicked_OK(self):
-        self.fmanager.saveImages()
-        self.close()
-
-    def clicked_Cancel(self):
-        self.close()
-    def setListBox(self):
-        self.list_widget = QListWidget()
-
-        for i in range(self.fmanager.getMaxLength()):
-            self.list_widget.addItem(f"{i+1}")
-
-        #選択行が変わったらイベン
-        self.list_widget.currentRowChanged.connect(self.listMove)
-        self.side_layout.addWidget(self.list_widget)
-    def listMove(self, index):
-        #print(index)
-        self.setLabels(index)
-    def setLabels(self,index):
-        tmp = self.sub_inner
-        self.sub_inner = FTViewSubWidget(self, self.fmanager, index)
-        self.inner.addWidget(self.sub_inner)
-        self.inner.setCurrentWidget(self.sub_inner)
-        self.inner.removeWidget(tmp)
-
-class FTViewSubWidget(QWidget):
-    def __init__(self, parent, fmanager, index):
-        super(FTViewSubWidget, self).__init__(parent)
-        self.sub_widgets = []
-        box = QVBoxLayout()
-        self.setLayout(box)
-        for i, p in enumerate(fmanager.getImagesUsingIndex(index)):
-            img, ft_id, ft_file = p
-            sub_widget = FTViewSubSubWidget(self)
-            self.sub_widgets.append(sub_widget)
-            img_name = str( "{}_{}{}".format(ft_file.getPath().stem, f"00{i}"[-2:], ft_file.getPath().suffix) )
-            # ファイル名ラベル
-            s = f"{i+1}:{img_name}"
-            sub_widget.setImg(s, img)
-            box.addWidget(sub_widget)
-
-
-class FTViewSubSubWidget(QWidget):
-    def __init__(self, parent = None):
-        super(FTViewSubSubWidget, self).__init__(parent)
-        self.name          = QLabel()
-        self.img_widget    = QWidget()
-        self.img           = QLabel(self.img_widget)
-        self.layout        = QVBoxLayout()
-        self.layout.addWidget(self.name)
-        self.layout.addWidget(self.img)
+        self.layout.addLayout(self.btns_layout)
         self.setLayout(self.layout)
-    def setImg(self, name, img):
-        self.resize(img.getQPixmap().size())
-        self.name.setText(name)
-        self.img.setPixmap(img.getQPixmap())
-        self.img.resize(img.getQPixmap().size())
-        self.img_widget.resize(img.getQPixmap().size())
-    def cls(self):
-        self.name.clear()
-        self.img.clear()
+
+    def btn_acils_run_clicked(self, event):
+        self.ff = FileForm();
+        self.ff.show()
+
+
 
 
 

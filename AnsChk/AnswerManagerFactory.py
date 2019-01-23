@@ -11,3 +11,5 @@ class AnswerManagerFactory(object):
     def create(self):
         cp_ansmngdata = deepcopy(self.ansmngdata)
         return AnswerManager(cp_ansmngdata)
+    def getAnsManageData(self):
+        return self.ansmngdata

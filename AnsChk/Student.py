@@ -11,3 +11,5 @@ class Student(object):
         return self.number
     def getName(self):
         return self.name
+    def getInfo(self):
+        return self.number, self.name
