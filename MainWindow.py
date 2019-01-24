@@ -9,11 +9,12 @@ import sys
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QWidget, QMessageBox, QApplication
 from Triming import *
+from AnsChk.Main import *
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(587, 49)
+        MainWindow.resize(300, 50)
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.horizontalLayout = QtWidgets.QHBoxLayout(self.centralwidget)
@@ -34,11 +35,18 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
+        MainWindow.setWindowTitle(_translate("MainWindow", "モード選択"))
         self.pushButton_1.setText(_translate("MainWindow", "トリミング"))
         self.pushButton_1.clicked.connect(self.GoTrimingWindow)
-        self.pushButton_2.setText(_translate("MainWindow", "ビューワー"))
+        self.pushButton_2.setText(_translate("MainWindow", "採点機能"))
         self.actionK.setText(_translate("MainWindow", "k"))
+        self.pushButton_2.clicked.connect(self.GoAH)
+
+
+    def GoAH(self,MainWindow):
+        self.anschk = AnswerCheckMain()
+        self.anschk.show()
+
 
     def GoTrimingWindow(self, MainWindow):
         self.widget = QtWidgets.QTabWidget()
