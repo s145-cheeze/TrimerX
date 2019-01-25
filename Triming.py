@@ -44,9 +44,9 @@ class Ui_tabWidget(object):
     def retranslateUi(self, tabWidget):
         _translate = QtCore.QCoreApplication.translate
 
-        tabWidget.setWindowTitle(_translate("tabWidget", "TabWidget"))
+        tabWidget.setWindowTitle(_translate("tabWidget", "トリミングモード"))
         self.label.setText(_translate("tabWidget", "この機能は入力画像内で選択した座標から切り取る機能である。"))
-        self.pushButton.setText(_translate("tabWidget", "自動トリミングモード"))
+        self.pushButton.setText(_translate("tabWidget", "自由トリミングモード"))
         self.pushButton.clicked.connect(self.GoFreeTrimingWindow)
         tabWidget.setTabText(tabWidget.indexOf(self.tab), _translate("tabWidget", "自由トリミング"))
 
